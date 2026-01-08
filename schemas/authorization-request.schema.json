@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://rbac-algorithm.dev/schemas/authorization-request.json",
+  "title": "Authorization Request",
+  "description": "Request to check if a user is authorized to perform an action",
+  "type": "object",
+  "required": ["user_id", "action", "resource"],
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "ID of the user requesting authorization",
+      "pattern": "^[a-zA-Z0-9_-]+$"
+    },
+    "action": {
+      "type": "string",
+      "description": "Action the user wants to perform",
+      "pattern": "^[a-zA-Z0-9_*-]+$"
+    },
+    "resource": {
+      "type": "object",
+      "description": "Resource being accessed",
+      "required": ["type", "id"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Type of resource",
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the resource instance",
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "attributes": {
+          "type": "object",
+          "description": "Resource attributes for ABAC evaluation",
+          "additionalProperties": true
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "description": "Additional context for authorization decision",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "description": "Domain/tenant context"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Request timestamp"
+        },
+        "ip_address": {
+          "type": "string",
+          "description": "Client IP address",
+          "format": "ipv4"
+        },
+        "user_agent": {
+          "type": "string",
+          "description": "Client user agent"
+        },
+        "session_id": {
+          "type": "string",
+          "description": "Session identifier"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

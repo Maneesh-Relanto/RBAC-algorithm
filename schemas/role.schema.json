@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://rbac-algorithm.dev/schemas/role.json",
+  "title": "Role",
+  "description": "Represents a role that can be assigned to users",
+  "type": "object",
+  "required": ["id", "name"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the role",
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name for the role",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the role's purpose and scope",
+      "maxLength": 1000
+    },
+    "permissions": {
+      "type": "array",
+      "description": "List of permission IDs granted by this role",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9_-]+$"
+      },
+      "uniqueItems": true,
+      "default": []
+    },
+    "parent_id": {
+      "type": ["string", "null"],
+      "description": "Parent role ID for inheritance (null for root roles)",
+      "pattern": "^[a-zA-Z0-9_-]+$"
+    },
+    "domain": {
+      "type": ["string", "null"],
+      "description": "Domain/tenant for multi-tenancy isolation",
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "maxLength": 255
+    },
+    "status": {
+      "type": "string",
+      "description": "Current status of the role",
+      "enum": ["active", "inactive", "suspended", "deleted"],
+      "default": "active"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata about the role",
+      "additionalProperties": true
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when role was created (ISO 8601)"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of last update (ISO 8601)"
+    }
+  },
+  "additionalProperties": false
+}

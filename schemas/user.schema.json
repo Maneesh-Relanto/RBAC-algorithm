@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://rbac-algorithm.dev/schemas/user.json",
+  "title": "User",
+  "description": "Represents a user (subject/actor) in the RBAC system",
+  "type": "object",
+  "required": ["id", "email"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the user",
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "User's email address (must be unique)",
+      "maxLength": 320
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name of the user",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "attributes": {
+      "type": "object",
+      "description": "Additional attributes for attribute-based access control (ABAC)",
+      "additionalProperties": true,
+      "examples": [
+        {
+          "department": "engineering",
+          "level": "senior",
+          "location": "US-CA"
+        }
+      ]
+    },
+    "status": {
+      "type": "string",
+      "description": "Current status of the user account",
+      "enum": ["active", "inactive", "suspended", "deleted"],
+      "default": "active"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when user was created (ISO 8601)"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of last update (ISO 8601)"
+    }
+  },
+  "additionalProperties": false
+}

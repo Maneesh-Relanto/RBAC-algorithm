@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://rbac-algorithm.dev/schemas/authorization-response.json",
+  "title": "Authorization Response",
+  "description": "Response from authorization check",
+  "type": "object",
+  "required": ["allowed"],
+  "properties": {
+    "allowed": {
+      "type": "boolean",
+      "description": "Whether the action is authorized"
+    },
+    "reason": {
+      "type": "string",
+      "description": "Human-readable explanation of the decision",
+      "examples": [
+        "User has 'admin' role with 'document:write' permission",
+        "Permission denied: No matching role found"
+      ]
+    },
+    "matched_permissions": {
+      "type": "array",
+      "description": "List of permission IDs that matched (empty if denied)",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "matched_roles": {
+      "type": "array",
+      "description": "List of role IDs that granted access",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "evaluation_time_ms": {
+      "type": "number",
+      "description": "Time taken to evaluate the request in milliseconds",
+      "minimum": 0
+    },
+    "cache_hit": {
+      "type": "boolean",
+      "description": "Whether the result was served from cache",
+      "default": false
+    }
+  },
+  "additionalProperties": false
+}
