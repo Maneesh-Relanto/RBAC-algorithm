@@ -2,7 +2,7 @@
 
 from abc import ABC
 from typing import Dict, List, Optional, Any
-from datetime import datetime
+from datetime import datetime, timezone
 
 from ..core.protocols import IStorageProvider
 from ..core.models import User, Permission, Resource
@@ -71,7 +71,7 @@ class BaseStorage(IStorageProvider, ABC):
             raise ValidationError("Valid role ID is required")
         
         # Check if assignment is expired
-        if assignment.expires_at and assignment.expires_at < datetime.utcnow():
+        if assignment.expires_at and assignment.expires_at < datetime.now(timezone.utc):
             raise ValidationError("Role assignment has expired")
     
     def _check_circular_hierarchy(
@@ -108,7 +108,7 @@ class BaseStorage(IStorageProvider, ABC):
             if current in visited:
                 from ..core.exceptions import CircularDependencyError
                 raise CircularDependencyError(
-                    f"Circular dependency detected in role hierarchy"
+                    "Circular dependency detected in role hierarchy"
                 )
             
             visited.add(current)

@@ -9,7 +9,7 @@ This example demonstrates the core features of the RBAC system:
 """
 
 from rbac import RBAC
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 
 def main():
@@ -133,15 +133,15 @@ def main():
     
     # Alice is a Viewer
     rbac.assign_role("user_alice", "role_viewer")
-    print(f"   ✓ Assigned role 'Viewer' to Alice")
+    print("   ✓ Assigned role 'Viewer' to Alice")
     
     # Bob is an Editor
     rbac.assign_role("user_bob", "role_editor")
-    print(f"   ✓ Assigned role 'Editor' to Bob")
+    print("   ✓ Assigned role 'Editor' to Bob")
     
     # Carol is an Administrator
     rbac.assign_role("user_carol", "role_admin")
-    print(f"   ✓ Assigned role 'Administrator' to Carol")
+    print("   ✓ Assigned role 'Administrator' to Carol")
     print()
     
     # ==================== Check Permissions ====================
@@ -179,9 +179,9 @@ def main():
     
     result = rbac.check("user_bob", "write", "document")
     
-    print(f"   User: user_bob")
-    print(f"   Action: write")
-    print(f"   Resource: document")
+    print("   User: user_bob")
+    print("   Action: write")
+    print("   Resource: document")
     print(f"   Decision: {'ALLOWED' if result['allowed'] else 'DENIED'}")
     print(f"   Reason: {result['reason']}")
     print(f"   Matched Permissions: {', '.join(result['matched_permissions'])}")
@@ -208,7 +208,7 @@ def main():
     print()
     
     # Give Alice temporary admin access for 1 hour
-    expires_at = datetime.utcnow() + timedelta(hours=1)
+    expires_at = datetime.now(timezone.utc) + timedelta(hours=1)
     rbac.assign_role(
         "user_alice",
         "role_admin",
@@ -216,7 +216,7 @@ def main():
         expires_at=expires_at
     )
     
-    print(f"   ✓ Granted Alice temporary admin access")
+    print("   ✓ Granted Alice temporary admin access")
     print(f"      Expires: {expires_at.strftime('%Y-%m-%d %H:%M:%S UTC')}")
     
     # Check Alice's new permissions

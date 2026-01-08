@@ -8,7 +8,7 @@ and use dataclasses for clarity.
 
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Any, Set
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 import hashlib
 import json
@@ -120,8 +120,8 @@ class User:
             New User instance
         """
         status = EntityStatus(data.get('status', 'active'))
-        created_at = datetime.fromisoformat(data['created_at']) if 'created_at' in data else datetime.utcnow()
-        updated_at = datetime.fromisoformat(data['updated_at']) if 'updated_at' in data else datetime.utcnow()
+        created_at = datetime.fromisoformat(data['created_at']) if 'created_at' in data else datetime.now(timezone.utc)
+        updated_at = datetime.fromisoformat(data['updated_at']) if 'updated_at' in data else datetime.now(timezone.utc)
         
         return cls(
             id=data['id'],
@@ -224,7 +224,7 @@ class Permission:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'Permission':
         """Create permission from dictionary."""
-        created_at = datetime.fromisoformat(data['created_at']) if 'created_at' in data else datetime.utcnow()
+        created_at = datetime.fromisoformat(data['created_at']) if 'created_at' in data else datetime.now(timezone.utc)
         
         return cls(
             id=data['id'],
@@ -328,7 +328,7 @@ class Resource:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'Resource':
         """Create resource from dictionary."""
-        created_at = datetime.fromisoformat(data['created_at']) if 'created_at' in data else datetime.utcnow()
+        created_at = datetime.fromisoformat(data['created_at']) if 'created_at' in data else datetime.now(timezone.utc)
         
         return cls(
             id=data['id'],

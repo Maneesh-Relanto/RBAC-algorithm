@@ -87,6 +87,22 @@ logs/
 coverage/
 *.cover
 .hypothesis/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.pytest_cache/
+test-results.xml
+
+# Code quality reports
+pylint-report.txt
+flake8-report.txt
+bandit-report.txt
+mypy-report/
+.mypy_cache/
+.dmypy.json
+dmypy.json
 
 # Documentation builds
 docs/_build/

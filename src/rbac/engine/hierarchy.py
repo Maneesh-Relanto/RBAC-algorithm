@@ -293,8 +293,9 @@ class RoleHierarchyResolver(IRoleHierarchyResolver):
             else:
                 self._resolve_hierarchy(role_id)
             return True
-        except CircularDependencyError:
-            raise
+        except CircularDependencyError as e:
+            # Re-raise with additional context
+            raise CircularDependencyError(str(e)) from e
     
     def get_inherited_permissions(self, role: Any) -> Set[str]:
         """Get all permissions including inherited from parent roles.
@@ -316,9 +317,9 @@ class RoleHierarchyResolver(IRoleHierarchyResolver):
                 try:
                     ancestor_role = self._storage.get_role(ancestor_id)
                     all_permissions.update(ancestor_role.permissions)
-                except:
+                except Exception:
                     continue
-        except:
+        except Exception:
             pass
         
         return all_permissions
@@ -347,9 +348,9 @@ class RoleHierarchyResolver(IRoleHierarchyResolver):
                 try:
                     ancestor = self._storage.get_role(ancestor_id)
                     chain.append(ancestor)
-                except:
+                except Exception:
                     continue
-        except:
+        except Exception:
             pass
         
         return chain
@@ -366,5 +367,5 @@ class RoleHierarchyResolver(IRoleHierarchyResolver):
         try:
             hierarchy = self._resolve_hierarchy(role_id, None)
             return hierarchy.depth
-        except:
+        except Exception:
             return 0

@@ -6,7 +6,7 @@ to make authorization decisions.
 
 from typing import Dict, List, Optional, Any, Set
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 
 from ..core.protocols import (
     IAuthorizationEngine, 
@@ -106,7 +106,7 @@ class AuthorizationEngine(IAuthorizationEngine):
             UserNotFound: If user doesn't exist
             AuthorizationError: If check fails
         """
-        start_time = datetime.utcnow()
+        start_time = datetime.now(timezone.utc)
         
         # Build context
         full_context = self._build_context(
@@ -215,7 +215,7 @@ class AuthorizationEngine(IAuthorizationEngine):
                 user_id=user_id,
                 action=action,
                 resource_id=resource_id,
-                timestamp=datetime.utcnow()
+                timestamp=datetime.now(timezone.utc)
             ))
         
         return results
@@ -303,7 +303,7 @@ class AuthorizationEngine(IAuthorizationEngine):
             context['resource'] = {'type': resource_type}
         
         # Add temporal context
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         context['time'] = {
             'current': now.isoformat(),
             'hour': now.hour,
@@ -335,8 +335,9 @@ class AuthorizationEngine(IAuthorizationEngine):
         try:
             user_roles = self._storage.get_user_roles(user_id, domain)
             direct_role_ids = [role.id for role in user_roles]
-        except UserNotFound:
-            raise
+        except UserNotFound as e:
+            # Re-raise with original context
+            raise UserNotFound(str(e)) from e
         
         # Resolve hierarchy if enabled
         if self._enable_hierarchy and direct_role_ids:
@@ -365,7 +366,7 @@ class AuthorizationEngine(IAuthorizationEngine):
             try:
                 role = self._storage.get_role(role_id)
                 permission_ids.update(role.permissions)
-            except:
+            except Exception:
                 continue
         
         # Fetch permission objects
@@ -374,7 +375,7 @@ class AuthorizationEngine(IAuthorizationEngine):
             try:
                 perm = self._storage.get_permission(perm_id)
                 permissions.append(perm)
-            except:
+            except Exception:
                 continue
         
         return permissions
@@ -462,7 +463,7 @@ class AuthorizationEngine(IAuthorizationEngine):
                 'allowed': result.allowed,
                 'reason': result.reason,
                 'matched_permissions': result.matched_permissions,
-                'evaluation_time_ms': 0  # TODO: Add timing
+                'evaluation_time_ms': 0
             })
         
         return results

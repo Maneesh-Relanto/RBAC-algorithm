@@ -7,9 +7,14 @@ for managing roles and role hierarchies.
 
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Any, Set
-from datetime import datetime
+from datetime import datetime, timezone
 
 from rbac.core.models import Permission, EntityStatus
+
+
+def _utcnow() -> datetime:
+    """Helper function for default datetime values."""
+    return datetime.now(timezone.utc)
 
 
 @dataclass(frozen=True)
@@ -57,8 +62,8 @@ class Role:
     domain: Optional[str] = None
     status: EntityStatus = EntityStatus.ACTIVE
     metadata: Dict[str, Any] = field(default_factory=dict)
-    created_at: datetime = field(default_factory=datetime.utcnow)
-    updated_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=_utcnow)
+    updated_at: datetime = field(default_factory=_utcnow)
     
     def __post_init__(self):
         """Validate role data after initialization."""
@@ -148,12 +153,12 @@ class Role:
         created_at = (
             datetime.fromisoformat(data['created_at']) 
             if 'created_at' in data 
-            else datetime.utcnow()
+            else datetime.now(timezone.utc)
         )
         updated_at = (
             datetime.fromisoformat(data['updated_at']) 
             if 'updated_at' in data 
-            else datetime.utcnow()
+            else datetime.now(timezone.utc)
         )
         
         # Convert permissions list to set
@@ -194,7 +199,7 @@ class Role:
             status=self.status,
             metadata=self.metadata,
             created_at=self.created_at,
-            updated_at=datetime.utcnow()
+            updated_at=datetime.now(timezone.utc)
         )
     
     def with_parent(self, parent_id: Optional[str]) -> 'Role':
@@ -217,7 +222,7 @@ class Role:
             status=self.status,
             metadata=self.metadata,
             created_at=self.created_at,
-            updated_at=datetime.utcnow()
+            updated_at=datetime.now(timezone.utc)
         )
 
 
@@ -252,7 +257,7 @@ class RoleAssignment:
     role_id: str
     domain: Optional[str] = None
     granted_by: Optional[str] = None
-    granted_at: datetime = field(default_factory=datetime.utcnow)
+    granted_at: datetime = field(default_factory=_utcnow)
     expires_at: Optional[datetime] = None
     metadata: Dict[str, Any] = field(default_factory=dict)
     
@@ -272,7 +277,7 @@ class RoleAssignment:
         """
         if self.expires_at is None:
             return False
-        return datetime.utcnow() > self.expires_at
+        return datetime.now(timezone.utc) > self.expires_at
     
     def is_active(self) -> bool:
         """Check if role assignment is currently active."""
@@ -296,7 +301,7 @@ class RoleAssignment:
         granted_at = (
             datetime.fromisoformat(data['granted_at']) 
             if 'granted_at' in data 
-            else datetime.utcnow()
+            else datetime.now(timezone.utc)
         )
         expires_at = (
             datetime.fromisoformat(data['expires_at']) 

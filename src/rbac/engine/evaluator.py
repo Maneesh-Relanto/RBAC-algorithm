@@ -308,20 +308,18 @@ class PolicyEvaluator(IPolicyEvaluator):
                 pass
         
         # Boolean conversions
-        if actual_type == bool:
-            if isinstance(expected, str):
-                return actual, expected.lower() in ('true', '1', 'yes')
+        if actual_type == bool and isinstance(expected, str):
+            return actual, expected.lower() in ('true', '1', 'yes')
         
         # Time conversions (for time-based policies)
-        if isinstance(actual, (datetime, time)):
-            if isinstance(expected, str):
-                try:
-                    expected_time = datetime.strptime(expected, '%H:%M').time()
-                    if isinstance(actual, datetime):
-                        actual = actual.time()
-                    return actual, expected_time
-                except ValueError:
-                    pass
+        if isinstance(actual, (datetime, time)) and isinstance(expected, str):
+            try:
+                expected_time = datetime.strptime(expected, '%H:%M').time()
+                if isinstance(actual, datetime):
+                    actual = actual.time()
+                return actual, expected_time
+            except ValueError:
+                pass
         
         # List/set membership
         if isinstance(expected, (list, tuple, set)):

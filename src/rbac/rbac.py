@@ -4,7 +4,7 @@ This module provides the primary interface for using the RBAC system.
 """
 
 from typing import Dict, List, Optional, Any, Union
-from datetime import datetime
+from datetime import datetime, timezone
 
 from .core.models import User, Permission, Resource, EntityStatus
 from .core.models.role import Role, RoleAssignment
@@ -241,8 +241,8 @@ class RBAC:
             attributes=attributes or {},
             domain=domain,
             status=EntityStatus.ACTIVE,
-            created_at=datetime.utcnow(),
-            updated_at=datetime.utcnow()
+            created_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(timezone.utc)
         )
         
         return self._storage.create_user(user)
@@ -292,8 +292,8 @@ class RBAC:
             domain=domain,
             description=description,
             status=EntityStatus.ACTIVE,
-            created_at=datetime.utcnow(),
-            updated_at=datetime.utcnow()
+            created_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(timezone.utc)
         )
         
         return self._storage.create_role(role)
@@ -338,7 +338,7 @@ class RBAC:
                 description=role.description,
                 status=role.status,
                 created_at=role.created_at,
-                updated_at=datetime.utcnow()
+                updated_at=datetime.now(timezone.utc)
             )
             
             return self._storage.update_role(updated_role)
@@ -417,7 +417,7 @@ class RBAC:
             role_id=role_id,
             domain=domain,
             granted_by=granted_by,
-            granted_at=datetime.utcnow(),
+            granted_at=datetime.now(timezone.utc),
             expires_at=expires_at
         )
         
@@ -494,8 +494,8 @@ class RBAC:
             attributes=attributes or {},
             domain=domain,
             status=EntityStatus.ACTIVE,
-            created_at=datetime.utcnow(),
-            updated_at=datetime.utcnow()
+            created_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(timezone.utc)
         )
         
         return self._storage.create_resource(resource)

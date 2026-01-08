@@ -12,8 +12,8 @@
   <a href="#-interactive-documentation">📖 Interactive Docs</a> •
   <a href="#-quick-start">⚡ Quick Start</a> •
   <a href="#-key-features">✨ Features</a> •
-  <a href="documentation/guides/GETTING_STARTED.md">📘 Guides</a> •
-  <a href="CONTRIBUTING.md">🤝 Contributing</a>
+  <a href="PROJECT_STRUCTURE.md">📁 Project Structure</a> •
+  <a href="docs/CONTRIBUTING.md">🤝 Contributing</a>
 </p>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -28,20 +28,19 @@
 
 **Windows:**
 ```bash
-start-docs.bat
+.\scripts\start-docs.bat
 ```
 
 **Linux/Mac:**
 ```bash
-chmod +x start-docs.sh
-./start-docs.sh
+./scripts/start-docs.sh
 ```
 
 **Manual Start:**
 ```bash
 cd docs
 npm install  # First time only
-npm start    # Opens at http://localhost:3000
+npm start    # Opens at http://localhost:3001
 ```
 
 **What you'll find:**
@@ -211,6 +210,12 @@ if result.allowed:
 - **[Quick Start](documentation/guides/QUICKSTART.md)** - Get up and running in 5 minutes
 - **[Setup Guide](documentation/guides/SETUP.md)** - Detailed installation and configuration
 
+### Testing & Quality
+- **[Testing Guide](TESTING.md)** - Unit tests, code quality tools, and SonarQube integration
+- Run tests: `pytest tests -v --cov=src/rbac`
+- Validate code: `.\validate-code.bat` (Windows) or `./validate-code.sh` (Linux/Mac)
+- SonarQube scan: `.\sonar-scan.bat` (after setup)
+
 ### Architecture & Design
 - [Architecture Overview](documentation/architecture/ARCHITECTURE.md) - System design and patterns
 - [Protocol Specification](documentation/architecture/PROTOCOL.md) - Language-agnostic protocol
@@ -343,7 +348,41 @@ results = rbac.batch_check([
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [Contributing Guide](docs/CONTRIBUTING.md) for details.
+
+## 📁 Project Organization
+
+This project follows a clean, organized structure:
+
+```
+RBAC algorithm/
+├── 📂 .quality/          # Code quality & SonarQube configs
+├── 📂 docs/              # Documentation & website
+├── 📂 scripts/           # Utility scripts (validate, start-docs)
+├── 📂 src/               # Source code
+├── 📂 tests/             # Test suite
+└── 📂 examples/          # Usage examples
+```
+
+**Quick References:**
+- 📖 **[Project Structure](PROJECT_STRUCTURE.md)** - Detailed directory guide
+- ⚡ **[Quick Reference](QUICK_REFERENCE.md)** - Commands & shortcuts
+- 🧪 **[Testing Guide](docs/TESTING.md)** - How to test & validate code
+- 🔍 **[Fix Summary](docs/FIX_SUMMARY.md)** - SonarQube fixes documentation
+
+**Common Commands:**
+```bash
+# Code quality check
+.\scripts\validate-code.bat      # Windows
+./scripts/validate-code.sh       # Unix
+
+# Start documentation
+.\scripts\start-docs.bat         # Windows
+./scripts/start-docs.sh          # Unix
+
+# Run tests
+pytest tests/
+```
 
 ## 📄 License
 

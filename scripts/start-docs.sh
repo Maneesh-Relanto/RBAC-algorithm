@@ -1,6 +1,8 @@
 #!/bin/bash
 # Quick script to start the interactive documentation
 
+cd "$(dirname "$0")/.."
+
 echo ""
 echo "================================================================================"
 echo "  RBAC Algorithm - Interactive Documentation"

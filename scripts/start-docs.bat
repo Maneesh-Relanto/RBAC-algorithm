@@ -1,6 +1,8 @@
 @echo off
 REM Quick script to start the interactive documentation
 
+cd /d "%~dp0.."
+
 echo.
 echo ================================================================================
 echo   RBAC Algorithm - Interactive Documentation

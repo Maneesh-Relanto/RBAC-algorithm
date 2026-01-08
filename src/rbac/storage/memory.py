@@ -9,7 +9,7 @@ a thread-safe storage backend.
 """
 
 from typing import Dict, List, Optional, Any
-from datetime import datetime
+from datetime import datetime, timezone
 from collections import defaultdict
 import copy
 
@@ -96,7 +96,7 @@ class MemoryStorage(BaseStorage):
         
         # Update timestamps
         updated_user = copy.deepcopy(user)
-        updated_user.updated_at = datetime.utcnow()
+        updated_user.updated_at = datetime.now(timezone.utc)
         
         self._users[user.id] = updated_user
         return copy.deepcopy(updated_user)
@@ -108,7 +108,7 @@ class MemoryStorage(BaseStorage):
         
         user = self._users[user_id]
         user.status = EntityStatus.DELETED
-        user.updated_at = datetime.utcnow()
+        user.updated_at = datetime.now(timezone.utc)
         
         # Remove all role assignments
         self._role_assignments = [
@@ -208,7 +208,7 @@ class MemoryStorage(BaseStorage):
                 self._role_children[role.parent_id].append(role.id)
         
         updated_role = copy.deepcopy(role)
-        updated_role.updated_at = datetime.utcnow()
+        updated_role.updated_at = datetime.now(timezone.utc)
         
         self._roles[role.id] = updated_role
         return copy.deepcopy(updated_role)
@@ -227,7 +227,7 @@ class MemoryStorage(BaseStorage):
             )
         
         role.status = EntityStatus.DELETED
-        role.updated_at = datetime.utcnow()
+        role.updated_at = datetime.now(timezone.utc)
         
         # Remove all assignments
         self._role_assignments = [
@@ -372,7 +372,7 @@ class MemoryStorage(BaseStorage):
         
         resource = self._resources[resource_id]
         resource.status = EntityStatus.DELETED
-        resource.updated_at = datetime.utcnow()
+        resource.updated_at = datetime.now(timezone.utc)
         
         return True
     
@@ -444,7 +444,7 @@ class MemoryStorage(BaseStorage):
         if user_id not in self._users:
             raise UserNotFound(f"User {user_id} not found")
         
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         role_ids = set()
         
         for assignment in self._role_assignments:
@@ -480,7 +480,7 @@ class MemoryStorage(BaseStorage):
         if role_id not in self._roles:
             raise RoleNotFound(f"Role {role_id} not found")
         
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         user_ids = set()
         
         for assignment in self._role_assignments:
