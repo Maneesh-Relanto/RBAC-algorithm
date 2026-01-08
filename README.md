@@ -144,13 +144,28 @@ if result.allowed:
 
 ## 📚 Documentation
 
-- [Getting Started Guide](docs/getting-started.md)
-- [Core Concepts](docs/core-concepts.md)
-- [API Reference](docs/api-reference.md)
-- [Architecture Guide](docs/architecture.md)
-- [Performance Tuning](docs/performance.md)
-- [Security Best Practices](docs/security.md)
-- [Migration Guide](docs/migration.md)
+### Quick Links
+- **[Getting Started](documentation/guides/GETTING_STARTED.md)** - Complete introduction to RBAC Algorithm
+- **[Quick Start](documentation/guides/QUICKSTART.md)** - Get up and running in 5 minutes
+- **[Setup Guide](documentation/guides/SETUP.md)** - Detailed installation and configuration
+
+### Architecture & Design
+- [Architecture Overview](documentation/architecture/ARCHITECTURE.md) - System design and patterns
+- [Protocol Specification](documentation/architecture/PROTOCOL.md) - Language-agnostic protocol
+- [Project Structure](documentation/architecture/STRUCTURE.md) - Codebase organization
+- [Adapter Guidelines](documentation/architecture/ADAPTERS.md) - Multi-language adapters
+
+### Development
+- [Deployment Guide](documentation/development/DEPLOYMENT.md) - PyPI & documentation deployment
+- [Git Workflow](documentation/development/GIT_GUIDE.md) - Git best practices
+- [Implementation Summary](documentation/development/IMPLEMENTATION_SUMMARY.md) - Technical details
+- [Contributing](CONTRIBUTING.md) - How to contribute
+
+### Status & Roadmap
+- [Project Status](documentation/status/PROJECT_STATUS.md) - Current progress and roadmap
+
+### Interactive Documentation
+- **[Documentation Site](http://localhost:3001)** - Full interactive documentation with examples
 
 ## 🏗️ Architecture
 
