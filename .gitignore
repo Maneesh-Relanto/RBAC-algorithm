@@ -90,6 +90,9 @@ coverage/
 
 # Documentation builds
 docs/_build/
+docs/build/
+docs/.docusaurus/
+docs/node_modules/
 site/
 
 # OS

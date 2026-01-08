@@ -1,0 +1,159 @@
+.visualizer {
+  margin: 2rem 0;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--ifm-background-color);
+}
+
+.header {
+  padding: 1.5rem;
+  background: var(--ifm-color-emphasis-100);
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.header h3 {
+  margin: 0 0 1rem 0;
+}
+
+.exampleSelector {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.exampleBtn {
+  padding: 0.5rem 1rem;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.exampleBtn:hover {
+  background: var(--ifm-color-primary-lightest);
+}
+
+.exampleBtn.active {
+  background: var(--ifm-color-primary);
+  color: white;
+  border-color: var(--ifm-color-primary-dark);
+}
+
+.canvas {
+  width: 100%;
+  height: 400px;
+  background: white;
+  display: block;
+}
+
+.legend {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem;
+  background: var(--ifm-color-emphasis-100);
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  justify-content: center;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legendCircle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #667eea;
+}
+
+.legendArrow {
+  width: 30px;
+  height: 2px;
+  background: #667eea;
+  position: relative;
+}
+
+.legendArrow::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -3px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid #667eea;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+
+.details {
+  padding: 1.5rem;
+}
+
+.details h4 {
+  margin-top: 0;
+}
+
+.roleCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.roleCard {
+  padding: 1rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  background: var(--ifm-background-color);
+}
+
+.roleCard strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--ifm-color-primary);
+}
+
+.parent {
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-700);
+  margin-bottom: 0.5rem;
+}
+
+.permissions {
+  margin-top: 0.5rem;
+}
+
+.permissions strong {
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-900);
+}
+
+.permissions ul {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.5rem;
+  font-size: 0.85rem;
+}
+
+.permissions li {
+  margin: 0.25rem 0;
+  color: var(--ifm-color-emphasis-700);
+}
+
+@media screen and (max-width: 768px) {
+  .roleCards {
+    grid-template-columns: 1fr;
+  }
+  
+  .legend {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
