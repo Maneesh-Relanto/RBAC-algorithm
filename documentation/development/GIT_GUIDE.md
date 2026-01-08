@@ -123,8 +123,8 @@ docs/
 ### Initial Commit
 
 ```bash
-# Navigate to project root
-cd "c:\Users\Maneesh Thakur\Downloads\My Projects\RBAC algorithm"
+# Navigate to project root (folder containing README.md)
+cd path/to/rbac-algorithm
 
 # Initialize git (if not already done)
 git init

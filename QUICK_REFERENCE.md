@@ -171,11 +171,13 @@ from rbac.engine import AuthorizationEngine
 
 ### Scripts not working?
 ```bash
-# Make sure you're in project root
-cd "c:\Users\Maneesh Thakur\Downloads\My Projects\RBAC algorithm"
+# Make sure you're in the project root directory
+# (The folder containing README.md, src/, docs/, etc.)
+cd path/to/rbac-algorithm
 
-# Run with explicit path
-.\scripts\validate-code.bat
+# Then run scripts with relative path
+.\scripts\validate-code.bat     # Windows
+./scripts/validate-code.sh      # Unix/Mac
 ```
 
 ### Import errors in tests?

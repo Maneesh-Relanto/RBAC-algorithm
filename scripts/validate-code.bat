@@ -15,7 +15,7 @@ if not exist "venv\Scripts\activate.bat" (
     echo [ERROR] Virtual environment not found. Please run:
     echo   python -m venv venv
     echo   .\venv\Scripts\activate
-    echo   pip install -r requirements-dev.txt
+    echo   pip install -r .quality\requirements-dev.txt
     exit /b 1
 )
 

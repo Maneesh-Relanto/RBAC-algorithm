@@ -44,8 +44,14 @@ cp -r src/rbac /path/to/your/project/
 ### 1. Set up Python path
 
 ```bash
-cd "c:\Users\Maneesh Thakur\Downloads\My Projects\RBAC algorithm"
+# Navigate to your project directory
+cd path/to/rbac-algorithm
+
+# Windows
 set PYTHONPATH=%CD%\src
+
+# Unix/Mac/Linux
+export PYTHONPATH=$(pwd)/src
 ```
 
 ### 2. Run basic example
