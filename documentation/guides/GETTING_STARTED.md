@@ -1,5 +1,13 @@
 # Getting Started with RBAC Algorithm
 
+> **📖 Looking for a better experience?**  
+> This guide is available in an **interactive format** with live code examples!  
+> **→ [View in Interactive Docs](http://localhost:3000/docs/intro)** ←  
+>
+> Run: `start-docs.bat` (Windows) or `./start-docs.sh` (Linux/Mac)
+
+---
+
 ## Prerequisites
 
 - Python 3.8 or higher

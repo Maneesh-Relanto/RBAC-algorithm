@@ -8,9 +8,60 @@
   <strong>Enterprise Access Control Made Simple</strong>
 </p>
 
+<p align="center">
+  <a href="#-interactive-documentation">📖 Interactive Docs</a> •
+  <a href="#-quick-start">⚡ Quick Start</a> •
+  <a href="#-key-features">✨ Features</a> •
+  <a href="documentation/guides/GETTING_STARTED.md">📘 Guides</a> •
+  <a href="CONTRIBUTING.md">🤝 Contributing</a>
+</p>
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 [![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen.svg)]()
+
+## 📖 Interactive Documentation
+
+> **💡 Best Way to Learn!** Our interactive documentation includes live code examples, visual diagrams, and a playground to experiment with RBAC concepts.
+
+### 🚀 One-Click Start
+
+**Windows:**
+```bash
+start-docs.bat
+```
+
+**Linux/Mac:**
+```bash
+chmod +x start-docs.sh
+./start-docs.sh
+```
+
+**Manual Start:**
+```bash
+cd docs
+npm install  # First time only
+npm start    # Opens at http://localhost:3000
+```
+
+**What you'll find:**
+- 🎮 **Interactive Playground** - Try RBAC in your browser
+- 📊 **Visual Diagrams** - See role hierarchies in action
+- 💻 **Code Examples** - Copy-paste ready code in multiple languages
+- 🔍 **Full-Text Search** - Find what you need instantly
+- 🌓 **Dark Mode** - Easy on the eyes
+- 📱 **Mobile Friendly** - Works on any device
+
+### Quick Links to Interactive Docs
+Once the server is running, visit:
+- **[Home](http://localhost:3000)** - Overview and quick start
+- **[Interactive Playground](http://localhost:3000/playground)** - Try it live!
+- **[Getting Started](http://localhost:3000/docs/getting-started/installation)** - Step-by-step setup
+- **[Concepts](http://localhost:3000/docs/concepts/overview)** - Learn RBAC fundamentals
+- **[API Reference](http://localhost:3000/docs/api/overview)** - Complete API docs
+- **[Examples](http://localhost:3000/docs/getting-started/first-app)** - Build your first app
+
+---
 
 ## Overview
 
@@ -142,9 +193,14 @@ if result.allowed:
     print(f"Reason: {result.reason}")
 ```
 
-## 📚 Documentation
+## 📚 Additional Documentation
 
-### Quick Links
+> **💡 Prefer Markdown?** While we recommend the [interactive documentation](#-interactive-documentation) above, we also maintain markdown docs for offline reading and GitHub browsing.
+
+<details>
+<summary><strong>📘 View Markdown Documentation</strong> (Click to expand)</summary>
+
+### Quick Start Guides
 - **[Getting Started](documentation/guides/GETTING_STARTED.md)** - Complete introduction to RBAC Algorithm
 - **[Quick Start](documentation/guides/QUICKSTART.md)** - Get up and running in 5 minutes
 - **[Setup Guide](documentation/guides/SETUP.md)** - Detailed installation and configuration
@@ -155,17 +211,19 @@ if result.allowed:
 - [Project Structure](documentation/architecture/STRUCTURE.md) - Codebase organization
 - [Adapter Guidelines](documentation/architecture/ADAPTERS.md) - Multi-language adapters
 
-### Development
+### Development Resources
 - [Deployment Guide](documentation/development/DEPLOYMENT.md) - PyPI & documentation deployment
 - [Git Workflow](documentation/development/GIT_GUIDE.md) - Git best practices
 - [Implementation Summary](documentation/development/IMPLEMENTATION_SUMMARY.md) - Technical details
 - [Contributing](CONTRIBUTING.md) - How to contribute
 
-### Status & Roadmap
-- [Project Status](documentation/status/PROJECT_STATUS.md) - Current progress and roadmap
+### Project Status
+- [Current Status & Roadmap](documentation/status/PROJECT_STATUS.md) - Progress and future plans
 
-### Interactive Documentation
-- **[Documentation Site](http://localhost:3001)** - Full interactive documentation with examples
+### Navigation
+- [Documentation Index](documentation/README.md) - Browse all markdown documentation
+
+</details>
 
 ## 🏗️ Architecture
 

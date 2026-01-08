@@ -1,8 +1,60 @@
 # RBAC Algorithm Documentation
 
-Welcome to the comprehensive documentation for the RBAC Algorithm library.
+> **🎯 Looking for the best documentation experience?**  
+> **Start our [Interactive Documentation Site](#-interactive-documentation-recommended) instead!**
 
-## 📖 Documentation Structure
+---
+
+## 📖 Interactive Documentation (Recommended)
+
+The **interactive documentation site** is the best way to learn and explore RBAC Algorithm. It includes:
+
+✨ **Live Code Playground** - Experiment with RBAC in your browser  
+📊 **Visual Diagrams** - Interactive role hierarchy visualizations  
+🔍 **Full-Text Search** - Find what you need instantly  
+💻 **Multi-Language Examples** - Python, JavaScript, Go, Java, C#  
+🌓 **Dark Mode** - Beautiful interface, day or night  
+📱 **Mobile Responsive** - Access from any device
+
+### 🚀 Start the Interactive Docs
+
+```bash
+# From the project root
+cd docs
+
+# Install dependencies (first time only)
+npm install
+
+# Start the development server
+npm start
+
+# Opens at http://localhost:3000
+```
+
+### 📍 Quick Links (Once Running)
+
+| Topic | Link | Description |
+|-------|------|-------------|
+| **Home** | [localhost:3000](http://localhost:3000) | Overview and features |
+| **Playground** | [/playground](http://localhost:3000/playground) | Interactive code editor |
+| **Getting Started** | [/docs/intro](http://localhost:3000/docs/intro) | Quick introduction |
+| **Installation** | [/docs/getting-started/installation](http://localhost:3000/docs/getting-started/installation) | Setup guide |
+| **Quick Start** | [/docs/getting-started/quick-start](http://localhost:3000/docs/getting-started/quick-start) | 5-minute tutorial |
+| **First App** | [/docs/getting-started/first-app](http://localhost:3000/docs/getting-started/first-app) | Build complete app |
+| **Concepts** | [/docs/concepts/overview](http://localhost:3000/docs/concepts/overview) | RBAC fundamentals |
+| **API Reference** | [/docs/api/overview](http://localhost:3000/docs/api/overview) | Complete API docs |
+
+---
+
+## 📄 Markdown Documentation (This Folder)
+
+> **Note:** The files below are also available in a more interactive format on the documentation site above.
+
+Welcome to the markdown documentation. These files are useful for:
+- 📖 Offline reading
+- 🔎 GitHub browsing
+- 📝 Quick reference
+- 🤖 IDE integration
 
 ### 📘 Guides
 Getting started and learning resources:
