@@ -1,5 +1,11 @@
 # Project Structure
 
+## Architecture Diagram
+
+![RBAC Architecture](../../docs/static/img/architecture-diagram.svg)
+
+*[Edit diagram in draw.io](../../docs/static/img/architecture-diagram.drawio) - Open with [diagrams.net](https://app.diagrams.net/)*
+
 This document outlines the directory structure and organization principles for the RBAC Algorithm project.
 
 ## Directory Layout

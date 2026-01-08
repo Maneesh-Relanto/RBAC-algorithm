@@ -95,6 +95,10 @@ docs/.docusaurus/
 docs/node_modules/
 site/
 
+# Draw.io source files
+*.drawio
+*.drawio.bkp
+
 # OS
 Thumbs.db
 .DS_Store

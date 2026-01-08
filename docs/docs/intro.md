@@ -10,6 +10,12 @@ sidebar_position: 1
 
 Welcome to **RBAC Algorithm** - a powerful, enterprise-grade Role-Based Access Control library designed for modern applications.
 
+## System Architecture
+
+![RBAC Architecture](/img/architecture-diagram.svg)
+
+*Interactive diagram showing the complete system architecture. [Open in draw.io](/img/architecture-diagram.drawio) to edit.*
+
 ## What is RBAC Algorithm?
 
 RBAC Algorithm provides a comprehensive, language-agnostic solution for implementing fine-grained access control in your applications. Built on industry-standard protocols, it supports:

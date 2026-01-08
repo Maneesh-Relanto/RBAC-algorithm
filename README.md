@@ -67,6 +67,12 @@ Once the server is running, visit:
 
 A production-ready, high-performance Role-Based Access Control (RBAC) framework designed for simplicity, excellent developer experience, and enterprise-grade reliability.
 
+## 🏗️ Architecture
+
+![RBAC Architecture](docs/static/img/architecture-diagram.svg)
+
+*Protocol-based, multi-tenant, enterprise-grade architecture. [View interactive docs](http://localhost:3000/docs/intro) or [edit diagram](docs/static/img/architecture-diagram.drawio) in draw.io.*
+
 ## ✨ Key Features
 
 - **🚀 Simple API**: Intuitive authorization checks - `can(user, action, resource)`
