@@ -1,5 +1,13 @@
 # RBAC Algorithm - Complete File Structure
 
+## System Architecture
+
+![RBAC Architecture](../../docs/static/img/architecture-diagram.svg)
+
+*Complete system architecture. [Edit diagram](../../docs/static/img/architecture-diagram.drawio)*
+
+## Project Structure
+
 ```
 RBAC algorithm/
 │

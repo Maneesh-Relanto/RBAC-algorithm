@@ -355,14 +355,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Based on patterns from Casbin, Ory Keto, and Oso
 - Special thanks to the open-source community
 
-## 📞 Support
-
-- **Documentation**: [https://rbac-algorithm.readthedocs.io](https://rbac-algorithm.readthedocs.io)
-- **Issues**: [GitHub Issues](https://github.com/yourusername/rbac-algorithm/issues)
-- **Discord**: [Join our community](https://discord.gg/rbac)
-- **Email**: support@rbac-algorithm.dev
-
-## 🗺️ Roadmap
+## ️ Roadmap
 
 - [x] Core RBAC implementation
 - [x] Multi-tenancy support

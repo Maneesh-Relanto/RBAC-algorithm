@@ -1,10 +1,16 @@
 # Language Adapters Guide
 
+## System Architecture
+
+![RBAC Architecture](../../docs/static/img/architecture-diagram.svg)
+
+*Protocol-based architecture enabling multi-language adapters. [Edit diagram](../../docs/static/img/architecture-diagram.drawio)*
+
 ## Overview
 
 This document describes how to implement RBAC Algorithm adapters for different programming languages. Each adapter provides an idiomatic interface while adhering to the core protocol specification.
 
-## Architecture
+## Adapter Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────┐

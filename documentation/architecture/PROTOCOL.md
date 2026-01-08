@@ -4,6 +4,12 @@
 **Date**: January 8, 2026  
 **Authors**: RBAC Algorithm Contributors  
 
+## Architecture Overview
+
+![RBAC Architecture](../../docs/static/img/architecture-diagram.svg)
+
+*System architecture showing protocol-based design. [Edit diagram](../../docs/static/img/architecture-diagram.drawio)*
+
 ## Abstract
 
 This document defines a language-agnostic protocol for Role-Based Access Control (RBAC) that can be implemented in any programming language. The protocol ensures interoperability, consistency, and portability across different technology stacks.
