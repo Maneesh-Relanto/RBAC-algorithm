@@ -416,6 +416,114 @@ class AuthorizationEngine(IAuthorizationEngine):
         
         return matched
     
+    def batch_check(
+        self,
+        checks: List[Dict[str, Any]]
+    ) -> List[Dict[str, Any]]:
+        """Perform multiple authorization checks efficiently.
+        
+        Args:
+            checks: List of check requests, each containing:
+                - user_id: str
+                - action: str
+                - resource: Resource or dict
+                - context: Optional[Dict]
+                
+        Returns:
+            List of authorization results
+        """
+        results = []
+        for check in checks:
+            user_id = check.get('user_id')
+            action = check.get('action')
+            resource = check.get('resource')
+            context = check.get('context')
+            
+            # Parse resource
+            if isinstance(resource, dict):
+                resource_type = resource.get('type')
+                resource_id = resource.get('id')
+            elif isinstance(resource, str):
+                resource_type = resource
+                resource_id = None
+            else:
+                resource_type = getattr(resource, 'type', None)
+                resource_id = getattr(resource, 'id', None)
+            
+            result = self.check_permission(
+                user_id=user_id,
+                action=action,
+                resource_type=resource_type,
+                resource_id=resource_id,
+                context=context
+            )
+            
+            results.append({
+                'allowed': result.allowed,
+                'reason': result.reason,
+                'matched_permissions': result.matched_permissions,
+                'evaluation_time_ms': 0  # TODO: Add timing
+            })
+        
+        return results
+    
+    def get_allowed_actions(
+        self,
+        user_id: str,
+        resource: Any
+    ) -> List[str]:
+        """Get all actions user can perform on a resource.
+        
+        Args:
+            user_id: ID of the user
+            resource: Resource object or dict
+            
+        Returns:
+            List of allowed action names
+        """
+        # Parse resource
+        if isinstance(resource, dict):
+            resource_type = resource.get('type')
+            resource_id = resource.get('id')
+        elif isinstance(resource, str):
+            resource_type = resource
+            resource_id = None
+        else:
+            resource_type = getattr(resource, 'type', None)
+            resource_id = getattr(resource, 'id', None)
+        
+        # Get all user permissions for this resource type
+        permissions = self.get_user_permissions(user_id, resource_type)
+        
+        # Build context for ABAC evaluation
+        context = self._build_context(user_id, resource_type, resource_id, None)
+        
+        # Check which actions are allowed
+        allowed_actions = set()
+        
+        for perm in permissions:
+            # Check if permission matches resource type
+            if perm.resource_type != resource_type and perm.resource_type != '*':
+                continue
+            
+            # Evaluate ABAC conditions if present
+            if self._enable_abac and perm.conditions:
+                try:
+                    if not self._policy_evaluator.evaluate(perm.conditions, context):
+                        continue
+                except Exception:
+                    continue
+            
+            # Add the action (or all actions if wildcard)
+            if perm.action == '*':
+                # For wildcard, we can't enumerate all possible actions
+                # Return a special marker
+                allowed_actions.add('*')
+            else:
+                allowed_actions.add(perm.action)
+        
+        return list(allowed_actions)
+    
     def clear_cache(self) -> None:
         """Clear authorization cache.
         

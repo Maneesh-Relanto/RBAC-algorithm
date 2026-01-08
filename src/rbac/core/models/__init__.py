@@ -36,6 +36,7 @@ class User:
         name: Display name of the user
         attributes: Additional attributes for ABAC (department, location, etc.)
         status: Current status of the user account
+        domain: Optional domain/tenant identifier
         created_at: Timestamp when user was created
         updated_at: Timestamp of last update
         
@@ -53,6 +54,7 @@ class User:
     name: Optional[str] = None
     attributes: Dict[str, Any] = field(default_factory=dict)
     status: EntityStatus = EntityStatus.ACTIVE
+    domain: Optional[str] = None
     created_at: datetime = field(default_factory=datetime.utcnow)
     updated_at: datetime = field(default_factory=datetime.utcnow)
     
@@ -261,6 +263,9 @@ class Resource:
         attributes: Additional attributes for ABAC (owner, status, etc.)
         parent_id: Optional parent resource for hierarchical resources
         domain: Optional domain/tenant for multi-tenancy
+        status: Current status of the resource
+        created_at: Timestamp when resource was created
+        updated_at: Timestamp of last update
         
     Example:
         >>> resource = Resource(
@@ -279,8 +284,10 @@ class Resource:
     type: str
     attributes: Dict[str, Any] = field(default_factory=dict)
     parent_id: Optional[str] = None
+    status: EntityStatus = EntityStatus.ACTIVE
     domain: Optional[str] = None
     created_at: datetime = field(default_factory=datetime.utcnow)
+    updated_at: datetime = field(default_factory=datetime.utcnow)
     
     def __post_init__(self):
         """Validate resource data."""

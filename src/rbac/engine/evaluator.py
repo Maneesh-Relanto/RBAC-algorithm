@@ -92,6 +92,46 @@ class PolicyEvaluator(IPolicyEvaluator):
         
         return True
     
+    def evaluate_conditions(
+        self,
+        conditions: Dict[str, Any],
+        user: Any,
+        resource: Any,
+        context: Dict[str, Any]
+    ) -> bool:
+        """Evaluate ABAC conditions (protocol method).
+        
+        Args:
+            conditions: Conditions to evaluate
+            user: User object
+            resource: Resource object
+            context: Additional context
+            
+        Returns:
+            True if all conditions pass
+        """
+        # Build full context from user and resource
+        full_context = dict(context) if context else {}
+        
+        # Add user attributes
+        if user:
+            full_context['user'] = {
+                'id': getattr(user, 'id', None),
+                'email': getattr(user, 'email', None),
+                'name': getattr(user, 'name', None),
+                **getattr(user, 'attributes', {})
+            }
+        
+        # Add resource attributes
+        if resource:
+            full_context['resource'] = {
+                'id': getattr(resource, 'id', None),
+                'type': getattr(resource, 'type', None),
+                **getattr(resource, 'attributes', {})
+            }
+        
+        return self.evaluate(conditions, full_context)
+    
     def evaluate_batch(
         self,
         conditions: Optional[Dict[str, Any]],

@@ -243,6 +243,22 @@ class DataIntegrityError(StorageError):
         super().__init__(message, code="DATA_INTEGRITY_ERROR", **kwargs)
 
 
+class DuplicateEntityError(StorageError):
+    """
+    Raised when attempting to create an entity that already exists.
+    
+    Example:
+        >>> if entity_id in storage:
+        ...     raise DuplicateEntityError(
+        ...         f"Entity {entity_id} already exists",
+        ...         details={"entity_id": entity_id}
+        ...     )
+    """
+    
+    def __init__(self, message: str, **kwargs):
+        super().__init__(message, code="DUPLICATE_ENTITY", **kwargs)
+
+
 # Hierarchy Errors
 class HierarchyError(RBACException):
     """Base class for role hierarchy errors."""
@@ -263,6 +279,11 @@ class CircularDependency(HierarchyError):
     
     def __init__(self, message: str, **kwargs):
         super().__init__(message, code="CIRCULAR_DEPENDENCY", **kwargs)
+
+
+class CircularDependencyError(CircularDependency):
+    """Alias for CircularDependency for backwards compatibility."""
+    pass
 
 
 class MaxDepthExceeded(HierarchyError):

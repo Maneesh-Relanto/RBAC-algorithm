@@ -4,7 +4,7 @@ Handles role inheritance and hierarchy resolution to determine
 all effective roles for a user.
 """
 
-from typing import List, Set, Optional, Dict
+from typing import List, Set, Optional, Dict, Any
 from dataclasses import dataclass
 
 from ..core.protocols import IRoleHierarchyResolver, IStorageProvider
@@ -271,17 +271,100 @@ class RoleHierarchyResolver(IRoleHierarchyResolver):
         
         return children
     
-    def validate_hierarchy(self, role_id: str) -> bool:
+    def validate_hierarchy(self, role_id: str, parent_id: Optional[str] = None) -> bool:
         """Validate that a role's hierarchy is valid (no cycles).
         
         Args:
             role_id: Role to validate
+            parent_id: Optional parent ID to check (for future assignment)
             
         Returns:
             True if valid, raises CircularDependencyError if invalid
         """
         try:
-            self._resolve_hierarchy(role_id)
+            if parent_id:
+                # Check if adding parent_id would create a cycle
+                # by seeing if role_id is an ancestor of parent_id
+                parent_ancestors = self._get_ancestors(parent_id, None)
+                if role_id in parent_ancestors:
+                    raise CircularDependencyError(
+                        f"Role {role_id} is already an ancestor of {parent_id}"
+                    )
+            else:
+                self._resolve_hierarchy(role_id)
             return True
         except CircularDependencyError:
             raise
+    
+    def get_inherited_permissions(self, role: Any) -> Set[str]:
+        """Get all permissions including inherited from parent roles.
+        
+        Args:
+            role: Role object with id and permissions attributes
+            
+        Returns:
+            Set of all permission IDs (direct + inherited)
+        """
+        all_permissions = set(role.permissions)
+        
+        # Get all ancestor roles
+        try:
+            ancestors = self._get_ancestors(role.id, getattr(role, 'domain', None))
+            
+            # Collect permissions from all ancestors
+            for ancestor_id in ancestors:
+                try:
+                    ancestor_role = self._storage.get_role(ancestor_id)
+                    all_permissions.update(ancestor_role.permissions)
+                except:
+                    continue
+        except:
+            pass
+        
+        return all_permissions
+    
+    def get_role_chain(self, role_id: str) -> List[Any]:
+        """Get complete role inheritance chain.
+        
+        Args:
+            role_id: Starting role ID
+            
+        Returns:
+            List of role objects from leaf to root
+        """
+        chain = []
+        
+        try:
+            # Get the starting role
+            role = self._storage.get_role(role_id)
+            chain.append(role)
+            
+            # Get ancestors
+            ancestors = self._get_ancestors(role_id, getattr(role, 'domain', None))
+            
+            # Fetch each ancestor role
+            for ancestor_id in ancestors:
+                try:
+                    ancestor = self._storage.get_role(ancestor_id)
+                    chain.append(ancestor)
+                except:
+                    continue
+        except:
+            pass
+        
+        return chain
+    
+    def get_hierarchy_depth(self, role_id: str) -> int:
+        """Get depth of role in hierarchy (0 = root).
+        
+        Args:
+            role_id: Role to check
+            
+        Returns:
+            Depth (0 for root roles with no parent)
+        """
+        try:
+            hierarchy = self._resolve_hierarchy(role_id, None)
+            return hierarchy.depth
+        except:
+            return 0
