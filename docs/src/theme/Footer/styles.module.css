@@ -1,0 +1,87 @@
+.customFooterBanner {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+  padding: 4rem 2rem;
+  margin-top: 4rem;
+}
+
+[data-theme='dark'] .customFooterBanner {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.footerLogo {
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 20px rgba(102, 126, 234, 0.3));
+}
+
+.footerContent {
+  flex: 1;
+}
+
+.footerContent h3 {
+  font-size: 1.8rem;
+  margin: 0 0 0.5rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footerContent p {
+  font-size: 1.1rem;
+  color: var(--ifm-color-emphasis-700);
+  margin: 0 0 1.5rem;
+}
+
+.footerButtons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: 996px) {
+  .customFooterBanner {
+    padding: 3rem 1.5rem;
+  }
+
+  .container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footerLogo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .footerContent h3 {
+    font-size: 1.5rem;
+  }
+
+  .footerButtons {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .footerButtons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .footerButtons a {
+    margin: 0 !important;
+    width: 100%;
+  }
+}

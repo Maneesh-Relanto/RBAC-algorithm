@@ -4,6 +4,10 @@ sidebar_position: 1
 
 # Introduction
 
+<div style={{textAlign: 'center', margin: '2rem 0'}}>
+  <img src="/img/logo.svg" alt="RBAC Algorithm Logo" width="150" style={{marginBottom: '1rem'}} />
+</div>
+
 Welcome to **RBAC Algorithm** - a powerful, enterprise-grade Role-Based Access Control library designed for modern applications.
 
 ## What is RBAC Algorithm?

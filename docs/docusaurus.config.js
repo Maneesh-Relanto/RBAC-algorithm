@@ -50,7 +50,7 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      image: 'img/rbac-social-card.jpg',
+      image: 'img/logo-full.svg',
       navbar: {
         title: 'RBAC Algorithm',
         logo: {

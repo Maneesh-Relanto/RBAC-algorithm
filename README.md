@@ -1,5 +1,13 @@
 # RBAC Algorithm - Enterprise-Grade Authorization Framework
 
+<p align="center">
+  <img src="docs/static/img/logo.svg" alt="RBAC Algorithm Logo" width="200" />
+</p>
+
+<p align="center">
+  <strong>Enterprise Access Control Made Simple</strong>
+</p>
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 [![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen.svg)]()
@@ -32,10 +40,27 @@ A production-ready, high-performance Role-Based Access Control (RBAC) framework 
 
 ### Installation
 
-```bash
-# Python
-pip install rbac-algorithm
+#### Python (Current Implementation)
 
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/rbac-algorithm.git
+cd rbac-algorithm
+
+# Create virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install in development mode
+pip install -e .
+
+# Or install required dependencies
+pip install dataclasses-json typing-extensions
+```
+
+#### Other Languages (Coming Soon)
+
+```bash
 # Node.js
 npm install rbac-algorithm
 
@@ -49,26 +74,72 @@ dotnet add package RbacAlgorithm
 ### Basic Usage
 
 ```python
-from rbac import RBAC, User, Role, Permission
+from rbac import RBAC
 
-# Initialize RBAC engine
+# Initialize RBAC engine with in-memory storage
 rbac = RBAC()
 
-# Define permissions
-read_posts = Permission("posts", "read")
-write_posts = Permission("posts", "write")
+# Create a user
+user = rbac.create_user(
+    user_id="user_john",
+    email="john@example.com",
+    name="John Doe",
+    domain="company_a"
+)
 
-# Define roles
-viewer = Role("viewer", permissions=[read_posts])
-editor = Role("editor", permissions=[read_posts, write_posts])
+# Create permissions
+read_perm = rbac.create_permission(
+    permission_id="perm_read",
+    action="read",
+    resource_type="posts"
+)
 
-# Assign roles to users
-user = User("john@example.com")
-rbac.assign_role(user, viewer)
+write_perm = rbac.create_permission(
+    permission_id="perm_write",
+    action="write",
+    resource_type="posts"
+)
 
-# Check permissions
-if rbac.can(user, "read", "posts"):
+# Create roles with permissions
+viewer_role = rbac.create_role(
+    role_id="role_viewer",
+    name="Viewer",
+    domain="company_a",
+    permissions=["perm_read"]
+)
+
+editor_role = rbac.create_role(
+    role_id="role_editor",
+    name="Editor",
+    domain="company_a",
+    permissions=["perm_read", "perm_write"]
+)
+
+# Assign role to user
+rbac.assign_role_to_user(
+    user_id="user_john",
+    role_id="role_viewer",
+    domain="company_a"
+)
+
+# Create a resource
+post = rbac.create_resource(
+    resource_id="post_1",
+    resource_type="posts",
+    domain="company_a",
+    owner_id="user_john"
+)
+
+# Check permission
+result = rbac.check_permission(
+    user_id="user_john",
+    action="read",
+    resource_id="post_1"
+)
+
+if result.allowed:
     print("Access granted!")
+    print(f"Reason: {result.reason}")
 ```
 
 ## 📚 Documentation

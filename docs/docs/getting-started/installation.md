@@ -16,20 +16,62 @@ import TabItem from '@theme/TabItem';
 
 ### Requirements
 
-- Python 3.8 or higher
+- Python 3.8 or higher (tested on Python 3.13)
 - pip
+- Git (for cloning repository)
 
-### Install via pip
+### Installation Steps
+
+#### 1. Clone the Repository
 
 ```bash
-pip install rbac-algorithm
+git clone https://github.com/yourusername/rbac-algorithm.git
+cd rbac-algorithm
 ```
 
-### Verify Installation
+#### 2. Create Virtual Environment (Recommended)
+
+```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate it
+# On Windows:
+venv\Scripts\activate
+
+# On Linux/Mac:
+source venv/bin/activate
+```
+
+#### 3. Install Dependencies
+
+```bash
+# Install in development mode
+pip install -e .
+
+# Or install dependencies manually
+pip install dataclasses-json typing-extensions
+```
+
+#### 4. Verify Installation
 
 ```python
-import rbac
-print(rbac.__version__)
+from rbac import RBAC
+
+# Initialize RBAC
+rbac = RBAC()
+print("RBAC Algorithm successfully installed!")
+print(f"Storage: {type(rbac.storage).__name__}")
+```
+
+### Run Examples
+
+```bash
+# Run basic usage example
+python examples/basic_usage.py
+
+# Run ABAC example
+python examples/abac_example.py
 ```
 
 </TabItem>
