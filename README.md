@@ -75,8 +75,8 @@ A production-ready, high-performance Role-Based Access Control (RBAC) framework 
 ## ✨ Key Features
 
 - **🚀 Simple API**: Intuitive authorization checks - `can(user, action, resource)`
-- **⚡ High Performance**: Optimized for millions of authorization checks per second
-- **🔄 Flexible Storage**: Multiple backend support (In-Memory, SQL, NoSQL, Redis)
+- **⚡ High Performance**: Fast in-memory authorization checks with optimized algorithms
+- **🔄 Storage Layer**: Protocol-based storage interface with in-memory implementation
 - **🏢 Multi-Tenancy**: Built-in domain/organization isolation
 - **📊 Role Hierarchies**: Support for role inheritance and nested permissions
 - **🔍 Attribute-Based**: Hybrid RBAC/ABAC for context-aware authorization
@@ -269,51 +269,15 @@ matrix_mgr.apply_changes(editable_matrix)  # Persist to storage
 
 ## 🏗️ Architecture
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    Application Layer                     │
-├─────────────────────────────────────────────────────────┤
-│                    Authorization API                     │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
-│  │   Policy     │  │   Decision   │  │    Cache     │  │
-│  │   Engine     │  │   Engine     │  │   Manager    │  │
-│  └──────────────┘  └──────────────┘  └──────────────┘  │
-├─────────────────────────────────────────────────────────┤
-│                    Core RBAC Engine                      │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
-│  │    User      │  │     Role     │  │  Permission  │  │
-│  │   Manager    │  │   Manager    │  │   Manager    │  │
-│  └──────────────┘  └──────────────┘  └──────────────┘  │
-├─────────────────────────────────────────────────────────┤
-│                  Storage Abstraction                     │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
-│  │   In-Memory  │  │      SQL     │  │     Redis    │  │
-│  └──────────────┘  └──────────────┘  └──────────────┘  │
-└─────────────────────────────────────────────────────────┘
-```
+The RBAC Algorithm follows a layered architecture design:
 
-## 🔧 Configuration
+**Application Layer** → **Authorization API** → **Core RBAC Engine** → **Storage Abstraction**
 
-```yaml
-# config.yaml
-rbac:
-  storage:
-    type: "postgresql"
-    connection_string: "postgresql://localhost/rbac"
-  
-  cache:
-    enabled: true
-    ttl: 300
-    provider: "redis"
-  
-  performance:
-    batch_size: 1000
-    max_depth: 10  # Role hierarchy depth
-  
-  audit:
-    enabled: true
-    log_level: "info"
-```
+- **Authorization API**: RBAC class providing simple authorization interface
+- **Core RBAC Engine**: User Manager, Role Manager, Permission Manager, Authorization Engine
+- **Storage Abstraction**: Protocol-based interface with in-memory implementation
+
+For a detailed visual architecture diagram, see the [Architecture Diagram](#-architecture) section above or visit the [interactive documentation](http://localhost:3000/docs/intro).
 
 ## 🎨 Core Concepts
 
@@ -427,13 +391,24 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## ️ Roadmap
 
+### ✅ Completed
 - [x] Core RBAC implementation
-- [x] Multi-tenancy support
-- [x] Role hierarchies
-- [ ] GraphQL API
+- [x] Multi-tenancy support (domains)
+- [x] Role hierarchies with inheritance
+- [x] ABAC support with dynamic conditions
+- [x] Permissions matrix for visual management
+- [x] Comprehensive test suite (95%+ coverage)
+
+### 🚧 In Progress
+- [ ] Additional storage backends (SQL, Redis, etc.)
+- [ ] Performance benchmarks and optimization
+- [ ] More real-world examples
+
+### 📋 Planned
+- [ ] REST/GraphQL API adapters
 - [ ] Admin UI dashboard
-- [ ] Machine learning-based anomaly detection
-- [ ] Cloud deployment templates (AWS, Azure, GCP)
+- [ ] Multi-language implementations (Go, JavaScript, Java)
+- [ ] Cloud deployment templates
 
 ---
 

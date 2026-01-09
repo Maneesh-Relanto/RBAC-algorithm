@@ -24,6 +24,7 @@ RBAC Algorithm provides a comprehensive, language-agnostic solution for implemen
 - 🔐 **ABAC** - Attribute-Based Access Control with dynamic conditions
 - 📊 **Role Hierarchies** - Inheritance with automatic permission propagation
 - 🏢 **Multi-Tenancy** - Domain isolation for SaaS applications
+- � **Permissions Matrix** - Visual role×permission management
 - 🌐 **Language Agnostic** - Protocol-based with adapters for multiple languages
 
 ## Why RBAC Algorithm?
@@ -45,7 +46,7 @@ if result.allowed:
 
 ### Enterprise-Ready
 
-- **Performance** - Optimized with caching and batch operations
+- **Performance** - Fast in-memory storage with optimized algorithms
 - **Scalable** - From startups to enterprises
 - **Auditable** - Complete authorization trails
 - **Secure** - Industry best practices baked in
@@ -159,9 +160,42 @@ result = rbac.check_permission(
 )
 ```
 
+### Permissions Matrix
+
+Visualize and manage role-permission assignments interactively:
+
+```python
+from rbac import PermissionsMatrixManager, MatrixMode
+
+# Create matrix manager
+matrix_mgr = PermissionsMatrixManager(rbac._storage)
+
+# View current permissions as a table
+matrix = matrix_mgr.create_matrix(mode=MatrixMode.READONLY)
+matrix_mgr.print_matrix(matrix)
+
+# Output:
+# Feature                |   Viewer   |   Editor   |   Admin
+# ----------------------------------------------------------------
+# document - read        |     Y      |     Y      |     Y
+# document - write       |     N      |     Y      |     Y
+# document - delete      |     N      |     N      |     Y
+
+# Make changes interactively
+editable = matrix_mgr.create_matrix(mode=MatrixMode.EDITABLE)
+matrix_mgr.toggle_permission(editable, "role_viewer", "perm_write")
+matrix_mgr.apply_changes(editable)  # Persist to storage
+```
+
+**Features:**
+- Read-only and editable modes
+- Change tracking before applying
+- Bulk permission operations
+- Export to JSON for auditing
+- Pretty-printed tables
+
 ## Community & Support
 
 - 📖 [Documentation](/docs/getting-started/installation)
 - 💬 [GitHub Discussions](https://github.com/your-org/rbac-algorithm/discussions)
 - 🐛 [Issue Tracker](https://github.com/your-org/rbac-algorithm/issues)
-- 📧 [Email Support](mailto:support@rbac-algorithm.com)

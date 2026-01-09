@@ -228,16 +228,15 @@ class PermissionsMatrixManager:
         
         # Find the row and cell
         for row in matrix.rows:
-            if row.feature_id == permission_id:
-                if role_id in row.cells:
-                    cell = row.cells[role_id]
-                    cell.granted = not cell.granted
-                    
-                    # Track change
-                    key = (role_id, permission_id)
-                    matrix.changes[key] = cell.granted
-                    
-                    return cell.granted
+            if row.feature_id == permission_id and role_id in row.cells:
+                cell = row.cells[role_id]
+                cell.granted = not cell.granted
+                
+                # Track change
+                key = (role_id, permission_id)
+                matrix.changes[key] = cell.granted
+                
+                return cell.granted
         
         raise ValidationError(f"Permission {permission_id} not found in matrix")
     
@@ -261,13 +260,12 @@ class PermissionsMatrixManager:
             raise ValidationError("Matrix must be in EDITABLE mode to set permissions")
         
         for row in matrix.rows:
-            if row.feature_id == permission_id:
-                if role_id in row.cells:
-                    cell = row.cells[role_id]
-                    if cell.granted != granted:
-                        cell.granted = granted
-                        matrix.changes[(role_id, permission_id)] = granted
-                    return
+            if row.feature_id == permission_id and role_id in row.cells:
+                cell = row.cells[role_id]
+                if cell.granted != granted:
+                    cell.granted = granted
+                    matrix.changes[(role_id, permission_id)] = granted
+                return
         
         raise ValidationError(f"Permission {permission_id} not found in matrix")
     

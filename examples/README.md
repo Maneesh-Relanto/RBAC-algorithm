@@ -11,9 +11,9 @@ Make sure the RBAC package is installed:
 pip install -e .
 ```
 
-## Running Examples
+## Available Examples
 
-### 1. Basic Usage (`basic_usage.py`)
+### 1. Basic Usage (`basic_usage.py`) ✅
 
 Demonstrates core RBAC features:
 - Creating users, roles, and permissions
@@ -34,29 +34,9 @@ python examples/basic_usage.py
 - Checking if users can perform actions
 - Granting temporary admin access
 
-**Expected Output:**
-```
-==================================================
-RBAC Algorithm - Basic Example
-==================================================
-
-1. Initializing RBAC with in-memory storage...
-   ✓ RBAC initialized
-
-2. Creating permissions...
-   ✓ Created permission: perm_doc_read
-   ✓ Created permission: perm_doc_write
-   ...
-
-6. Checking permissions...
-   ✓ ALLOWED: Alice trying to READ a document
-   ✗ DENIED: Alice trying to WRITE a document
-   ...
-```
-
 ---
 
-### 2. Advanced ABAC (`abac_example.py`)
+### 2. Advanced ABAC (`abac_example.py`) ✅
 
 Demonstrates Attribute-Based Access Control:
 - Conditional permissions based on attributes
@@ -99,32 +79,61 @@ conditions={
 
 ---
 
-### 3. Multi-Tenancy (`multi_tenancy_example.py`) *(Coming Soon)*
+### 3. Permissions Matrix (`permissions_matrix_example.py`) ✅ *NEW!*
 
-Demonstrates tenant isolation:
-- Domain-scoped users and roles
-- Cross-tenant access control
-- Tenant-specific permissions
+Demonstrates visual role-permission management:
+- Creating read-only and editable matrices
+- Toggling and setting permissions
+- Applying/discarding changes
+- Bulk permission operations
+- Exporting matrix data
+- Filtering by roles or permissions
+
+**Run:**
+```bash
+python examples/permissions_matrix_example.py
+```
+
+**What you'll learn:**
+- Creating permission matrices (READONLY vs EDITABLE modes)
+- Visual table display of role×permission assignments
+- Interactive permission editing with change tracking
+- Applying changes to storage atomically
+- Discarding pending changes
+- Exporting matrix data for auditing
+- Filtering matrices for specific roles/permissions
+
+**Sample Output:**
+```
+Feature                    |     Viewer      |     Editor      |      Admin
+-------------------------------------------------------------------------------
+document - read            |        Y        |        Y        |        Y
+document - write           |        N        |        Y        |        Y
+document - delete          |        N        |        N        |        Y
+
+! 3 pending changes (call apply_changes() to save)
+```
+
+**Key Features:**
+- **Two Modes**: READONLY (safe viewing) and EDITABLE (modifications)
+- **Change Tracking**: All modifications tracked before applying
+- **Bulk Operations**: Modify multiple permissions at once
+- **Export**: JSON serialization for reporting
+- **Pretty Display**: Formatted tables with ✓/✗ or Y/N symbols
 
 ---
 
-### 4. REST API Integration (`api_example.py`) *(Coming Soon)*
+## Planned Examples
 
-Demonstrates web framework integration:
-- Flask/FastAPI middleware
-- JWT authentication integration
-- Request context extraction
-- Response formatting
+### 4. Multi-Tenancy (`multi_tenancy_example.py`) 📋
+
+Will demonstrate tenant isolation and cross-tenant access control.
 
 ---
 
-### 5. Performance Benchmarks (`benchmark.py`) *(Coming Soon)*
+### 5. Performance Benchmarks (`benchmark.py`) 📋
 
-Performance testing:
-- Simple permission checks
-- Hierarchy resolution speed
-- ABAC evaluation performance
-- Batch operation efficiency
+Will demonstrate performance testing and optimization strategies.
 
 ---
 
