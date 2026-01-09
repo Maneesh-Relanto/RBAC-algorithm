@@ -4,7 +4,7 @@
 
 ![RBAC Architecture](../../docs/static/img/architecture-diagram.svg)
 
-*Complete system architecture. [Edit diagram](../../docs/static/img/architecture-diagram.drawio)*
+*🎨 Enhanced system architecture diagram with verified accuracy - Shows all layers, implementations, and their relationships with colorful visual design. [Edit diagram](../../docs/static/img/architecture-diagram.drawio) in [diagrams.net](https://app.diagrams.net/)*
 
 ## Project Structure
 

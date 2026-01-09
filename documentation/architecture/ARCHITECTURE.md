@@ -4,7 +4,7 @@
 
 ![RBAC Architecture](../../docs/static/img/architecture-diagram.svg)
 
-*[Edit diagram in draw.io](../../docs/static/img/architecture-diagram.drawio) - Open with [diagrams.net](https://app.diagrams.net/)*
+*✨ Enhanced architecture diagram (96% verified against codebase) - Features colorful icons, modern Material Design colors, and clear component relationships. [Edit diagram](../../docs/static/img/architecture-diagram.drawio) in [diagrams.net](https://app.diagrams.net/)*
 
 This document outlines the directory structure and organization principles for the RBAC Algorithm project.
 

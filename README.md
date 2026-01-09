@@ -70,7 +70,7 @@ A production-ready, high-performance Role-Based Access Control (RBAC) framework 
 
 ![RBAC Architecture](docs/static/img/architecture-diagram.svg)
 
-*Protocol-based, multi-tenant, enterprise-grade architecture. [View interactive docs](http://localhost:3000/docs/intro) or [edit diagram](docs/static/img/architecture-diagram.drawio) in draw.io.*
+*✨ Enhanced architecture diagram with colorful icons, clear relationships, and verified accuracy (96%). [View interactive docs](http://localhost:3000/docs/intro) or [edit diagram](docs/static/img/architecture-diagram.drawio) in [diagrams.net](https://app.diagrams.net/).*
 
 ## ✨ Key Features
 

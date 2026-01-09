@@ -8,7 +8,7 @@
 
 ![RBAC Architecture](../../docs/static/img/architecture-diagram.svg)
 
-*System architecture showing protocol-based design. [Edit diagram](../../docs/static/img/architecture-diagram.drawio)*
+*✨ Protocol-based architecture diagram - Enhanced with colorful icons showing IStorageProvider, IAuthorizationEngine, IRoleHierarchyResolver, and IPolicyEvaluator interfaces. [Edit diagram](../../docs/static/img/architecture-diagram.drawio) in [diagrams.net](https://app.diagrams.net/)*
 
 ## Abstract
 

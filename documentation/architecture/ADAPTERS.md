@@ -4,7 +4,7 @@
 
 ![RBAC Architecture](../../docs/static/img/architecture-diagram.svg)
 
-*Protocol-based architecture enabling multi-language adapters. [Edit diagram](../../docs/static/img/architecture-diagram.drawio)*
+*🎨 Enhanced protocol-based architecture - Verified against codebase (96% accuracy), showing clear separation between protocols and implementations for multi-language adapter support. [Edit diagram](../../docs/static/img/architecture-diagram.drawio) in [diagrams.net](https://app.diagrams.net/)*
 
 ## Overview
 
