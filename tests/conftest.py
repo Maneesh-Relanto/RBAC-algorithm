@@ -2,13 +2,8 @@
 PyTest configuration and fixtures for RBAC Algorithm tests.
 """
 import pytest
-from src.rbac.core.models.user import User
-from src.rbac.core.models.role import Role
-from src.rbac.core.models.permission import Permission
-from src.rbac.core.models.resource import Resource
-from src.rbac.core.models.role_assignment import RoleAssignment
-from src.rbac.storage.memory import MemoryStorage
-from src.rbac.rbac import RBAC
+from rbac import User, Role, Permission, Resource, RBAC, RoleAssignment
+from rbac.storage.memory import MemoryStorage
 
 
 @pytest.fixture

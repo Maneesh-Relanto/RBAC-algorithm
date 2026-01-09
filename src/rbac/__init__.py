@@ -29,6 +29,7 @@ from .core.exceptions import (
     PolicyEvaluationError,
     AuthorizationError
 )
+from .matrix import PermissionsMatrixManager, PermissionsMatrix, MatrixMode
 
 __all__ = [
     # Version
@@ -44,6 +45,11 @@ __all__ = [
     "Resource",
     "RoleAssignment",
     "EntityStatus",
+    
+    # Matrix
+    "PermissionsMatrixManager",
+    "PermissionsMatrix",
+    "MatrixMode",
     
     # Exceptions
     "RBACException",

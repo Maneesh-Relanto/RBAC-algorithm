@@ -182,6 +182,9 @@ class MemoryStorage(BaseStorage):
     
     def update_role(self, role: Role) -> Role:
         """Update an existing role."""
+        from dataclasses import replace
+        from datetime import datetime, timezone
+        
         self._validate_role(role)
         
         if role.id not in self._roles:
@@ -207,8 +210,8 @@ class MemoryStorage(BaseStorage):
                 )
                 self._role_children[role.parent_id].append(role.id)
         
-        updated_role = copy.deepcopy(role)
-        updated_role.updated_at = datetime.now(timezone.utc)
+        # Use replace() to update timestamp for frozen dataclass
+        updated_role = replace(role, updated_at=datetime.now(timezone.utc))
         
         self._roles[role.id] = updated_role
         return copy.deepcopy(updated_role)

@@ -83,6 +83,7 @@ A production-ready, high-performance Role-Based Access Control (RBAC) framework 
 - **📝 Audit Ready**: Complete audit trail for compliance
 - **🌐 Framework Agnostic**: Works with any application architecture
 - **📦 Zero Dependencies**: Minimal core with optional extensions
+- **🎯 Permissions Matrix**: Visual role×permission management with interactive editing
 
 ## 🎯 Design Philosophy
 
@@ -196,6 +197,36 @@ result = rbac.check_permission(
 if result.allowed:
     print("Access granted!")
     print(f"Reason: {result.reason}")
+```
+
+### Permissions Matrix
+
+Visualize and manage role-permission assignments with an interactive matrix:
+
+```python
+from rbac import RBAC, PermissionsMatrixManager, MatrixMode
+
+rbac = RBAC()
+matrix_mgr = PermissionsMatrixManager(rbac._storage)
+
+# View current permissions
+matrix = matrix_mgr.create_matrix(mode=MatrixMode.READONLY)
+matrix_mgr.print_matrix(matrix)
+
+# Output:
+# Feature                    |     Viewer      |     Editor      |      Admin
+# -------------------------------------------------------------------------------
+# document - read            |        Y        |        Y        |        Y
+# document - write           |        N        |        Y        |        Y
+# document - delete          |        N        |        N        |        Y
+
+# Make changes interactively
+editable_matrix = matrix_mgr.create_matrix(mode=MatrixMode.EDITABLE)
+matrix_mgr.toggle_permission(editable_matrix, "role_viewer", "perm_write")
+matrix_mgr.apply_changes(editable_matrix)  # Persist to storage
+```
+
+**Learn more:** See [Permissions Matrix Guide](docs/docs/features/permissions-matrix.md) and [examples/permissions_matrix_example.py](examples/permissions_matrix_example.py)
 ```
 
 ## 📚 Additional Documentation
