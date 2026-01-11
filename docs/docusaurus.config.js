@@ -11,13 +11,15 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://your-domain.com',
+  url: 'https://maneesh-relanto.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
-  baseUrl: '/',
+  baseUrl: '/RBAC-algorithm/',
 
   // GitHub pages deployment config.
-  organizationName: 'your-org',
-  projectName: 'rbac-algorithm',
+  organizationName: 'Maneesh-Relanto',
+  projectName: 'RBAC-algorithm',
+  deploymentBranch: 'gh-pages',
+  trailingSlash: false,
 
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
