@@ -124,6 +124,16 @@ docs/.docusaurus/
 docs/node_modules/
 site/
 
+# Docusaurus build artifacts in root (GitHub Pages output)
+/404.html
+/index.html
+/playground.html
+/search.html
+/sitemap.xml
+/opensearch.xml
+/assets/
+/img/
+
 # Draw.io source files
 *.drawio
 *.drawio.bkp
