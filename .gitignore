@@ -118,3 +118,6 @@ site/
 # OS
 Thumbs.db
 .DS_Store
+
+# Confidential marketing & content materials
+confidential/
