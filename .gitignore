@@ -98,6 +98,19 @@ test-results.xml
 # Code quality reports
 pylint-report.txt
 flake8-report.txt
+
+# Confidential/Private content
+confidential/
+**/confidential/
+*.confidential.*
+
+# LinkedIn and marketing content
+LINKEDIN_POST_STATUS.md
+URGENT_PERFORMANCE_UPDATE.md
+
+# Local benchmark results
+benchmark_results*.txt
+benchmarks/*.txt
 bandit-report.txt
 mypy-report/
 .mypy_cache/

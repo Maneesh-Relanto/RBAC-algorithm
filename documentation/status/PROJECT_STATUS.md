@@ -1,8 +1,10 @@
 # RBAC Algorithm - Project Status
 
-**Last Updated**: January 9, 2026  
+**Last Updated**: January 12, 2026  
 **Version**: 0.1.0 (Alpha)  
-**Status**: Development - Ready for Testing
+**Status**: 🟢 PUBLIC - Posted on LinkedIn  
+**Repository**: https://github.com/Maneesh-Relanto/RBAC-algorithm  
+**Marketing**: AI Security Campaign (Day 1 Posted)
 
 ## 🎯 Project Overview
 
