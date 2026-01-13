@@ -3,12 +3,11 @@ Unit tests for Permissions Matrix functionality.
 """
 
 import pytest
-from src.rbac import RBAC
-from src.rbac.matrix import (
+from rbac import RBAC, ValidationError
+from rbac.matrix import (
     PermissionsMatrixManager, MatrixMode, PermissionCell,
     MatrixRow, PermissionsMatrix
 )
-from src.rbac.core.exceptions import ValidationError
 
 
 class TestPermissionsMatrix:

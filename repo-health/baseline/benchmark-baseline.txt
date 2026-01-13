@@ -1,0 +1,12 @@
+RBAC Algorithm - Performance Benchmark Results
+================================================================================
+
+Peak Performance: 120,992 ops/sec
+Average Performance: 54,830 ops/sec
+
+Detailed Results:
+  storage_get_user: 58,620 ops/sec
+  storage_get_role: 43,384 ops/sec
+  storage_get_permission: 120,992 ops/sec
+  get_user_roles: 40,826 ops/sec
+  permission_check: 10,328 ops/sec

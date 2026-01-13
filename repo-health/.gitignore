@@ -1,0 +1,15 @@
+# Ignore fresh reports (keep baselines only)
+coverage-*.txt
+coverage-*.html
+coverage-*.json
+benchmark-*.txt
+sonarqube-*.json
+pytest-*.xml
+
+# But keep baseline artifacts
+!baseline/
+!baseline/**/*
+
+# Keep badge configs
+!badges/
+!badges/**/*

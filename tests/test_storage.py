@@ -2,9 +2,8 @@
 Unit tests for storage implementations.
 """
 import pytest
-from src.rbac.storage.memory import MemoryStorage
-from src.rbac.core.models.user import User
-from src.rbac.core.models.role import Role
+from rbac.storage.memory import MemoryStorage
+from rbac import User, Role
 
 
 class TestMemoryStorage:

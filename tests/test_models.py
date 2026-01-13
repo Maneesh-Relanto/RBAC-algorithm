@@ -2,11 +2,7 @@
 Unit tests for RBAC data models.
 """
 import pytest
-from src.rbac.core.models.user import User
-from src.rbac.core.models.role import Role
-from src.rbac.core.models.permission import Permission
-from src.rbac.core.models.resource import Resource
-from src.rbac.core.models.role_assignment import RoleAssignment
+from rbac import User, Role, Permission, Resource, RoleAssignment
 
 
 class TestUser:

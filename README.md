@@ -16,9 +16,14 @@
   <a href="docs/CONTRIBUTING.md">🤝 Contributing</a>
 </p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
-[![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen.svg)]()
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
+  <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python 3.8+">
+  <a href="repo-health/baseline/coverage-baseline.txt"><img src="https://img.shields.io/badge/coverage-95%25-brightgreen" alt="Test Coverage"></a>
+  <a href="repo-health/baseline/sonarqube-baseline.md"><img src="https://img.shields.io/badge/code%20quality-A-brightgreen" alt="Code Quality"></a>
+  <a href="repo-health/baseline/benchmark-baseline.txt"><img src="https://img.shields.io/badge/performance-10K%20checks%2Fsec-orange" alt="Performance"></a>
+  <img src="https://img.shields.io/badge/dependencies-0-success" alt="Zero Dependencies">
+</p>
 
 ## 📖 Interactive Documentation
 
