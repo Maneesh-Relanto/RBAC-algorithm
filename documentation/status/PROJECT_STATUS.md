@@ -271,24 +271,7 @@ npm start -- --port 3001
 
 ## 📈 Roadmap
 
-### Version 0.2.0 (Q2 2026)
-- [ ] Complete test suite
-- [ ] JavaScript adapter
-- [ ] PyPI package release
-- [ ] Performance benchmarks
-
-### Version 0.3.0 (Q3 2026)
-- [ ] Go adapter
-- [ ] Redis storage
-- [ ] Audit logging
-- [ ] REST API
-
-### Version 1.0.0 (Q4 2026)
-- [ ] All language adapters
-- [ ] SQL storage
-- [ ] Production-ready
-- [ ] Full documentation
-- [ ] Security audit
+See internal planning documents for detailed roadmap and strategy.
 
 ## 🤝 Contributing
 

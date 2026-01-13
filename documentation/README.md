@@ -119,16 +119,6 @@ Resources for contributors and developers:
   - Design patterns used
   - Technical decisions
 
-### 📊 Status & Progress
-Project status and roadmap:
-
-- **[PROJECT_STATUS.md](status/PROJECT_STATUS.md)** - Current progress and roadmap
-  - Completed features
-  - In-progress items
-  - Roadmap (Q2-Q4 2026)
-  - Known issues
-  - Statistics
-
 ## 🚀 Quick Navigation
 
 ### I want to...
@@ -139,7 +129,6 @@ Project status and roadmap:
 - **Implement an adapter** → [ADAPTERS.md](architecture/ADAPTERS.md)
 - **Deploy to production** → [DEPLOYMENT.md](development/DEPLOYMENT.md)
 - **Contribute code** → [../CONTRIBUTING.md](../CONTRIBUTING.md)
-- **Check project status** → [PROJECT_STATUS.md](status/PROJECT_STATUS.md)
 
 ## 🌐 Interactive Documentation
 
