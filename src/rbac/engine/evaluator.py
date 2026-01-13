@@ -328,6 +328,25 @@ class PolicyEvaluator(IPolicyEvaluator):
         # Default: convert both to strings for comparison
         return str(actual), str(expected)
     
+    def _validate_field_path(self, field_path: str) -> None:
+        """Validate a field path is a string."""
+        if not isinstance(field_path, str):
+            raise PolicyEvaluationError("Field paths must be strings")
+    
+    def _validate_operators_dict(self, field_path: str, operators_dict) -> None:
+        """Validate operators dictionary for a field path."""
+        if not isinstance(operators_dict, dict):
+            raise PolicyEvaluationError(
+                f"Operators for '{field_path}' must be a dictionary"
+            )
+        
+        for op in operators_dict.keys():
+            if op not in self.OPERATORS:
+                raise PolicyEvaluationError(
+                    f"Unknown operator: {op}. "
+                    f"Supported: {', '.join(self.OPERATORS.keys())}"
+                )
+    
     def validate_conditions(self, conditions: Dict[str, Any]) -> bool:
         """Validate that conditions are well-formed.
         
@@ -347,19 +366,7 @@ class PolicyEvaluator(IPolicyEvaluator):
             raise PolicyEvaluationError("Conditions must be a dictionary")
         
         for field_path, operators_dict in conditions.items():
-            if not isinstance(field_path, str):
-                raise PolicyEvaluationError("Field paths must be strings")
-            
-            if not isinstance(operators_dict, dict):
-                raise PolicyEvaluationError(
-                    f"Operators for '{field_path}' must be a dictionary"
-                )
-            
-            for op in operators_dict.keys():
-                if op not in self.OPERATORS:
-                    raise PolicyEvaluationError(
-                        f"Unknown operator: {op}. "
-                        f"Supported: {', '.join(self.OPERATORS.keys())}"
-                    )
+            self._validate_field_path(field_path)
+            self._validate_operators_dict(field_path, operators_dict)
         
         return True

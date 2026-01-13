@@ -380,6 +380,22 @@ class AuthorizationEngine(IAuthorizationEngine):
         
         return permissions
     
+    def _permission_matches_request(self, perm, action: str, resource_type: str) -> bool:
+        """Check if permission matches action and resource type."""
+        action_matches = perm.action == action or perm.action == '*'
+        resource_matches = perm.resource_type == resource_type or perm.resource_type == '*'
+        return action_matches and resource_matches
+    
+    def _evaluate_abac_conditions(self, perm, context: Dict[str, Any]) -> bool:
+        """Evaluate ABAC conditions for a permission."""
+        if not self._enable_abac or not perm.conditions:
+            return True
+        
+        try:
+            return self._policy_evaluator.evaluate(perm.conditions, context)
+        except Exception:
+            return False
+    
     def _find_matching_permissions(
         self,
         permissions: List[Permission],
@@ -394,24 +410,11 @@ class AuthorizationEngine(IAuthorizationEngine):
         matched = []
         
         for perm in permissions:
-            # Check action and resource type
-            if perm.action != action and perm.action != '*':
+            if not self._permission_matches_request(perm, action, resource_type):
                 continue
             
-            if perm.resource_type != resource_type and perm.resource_type != '*':
+            if not self._evaluate_abac_conditions(perm, context):
                 continue
-            
-            # Evaluate ABAC conditions if present
-            if self._enable_abac and perm.conditions:
-                try:
-                    if not self._policy_evaluator.evaluate(
-                        perm.conditions, 
-                        context
-                    ):
-                        continue
-                except Exception:
-                    # Policy evaluation failed = deny
-                    continue
             
             matched.append(perm.id)
         
@@ -468,6 +471,19 @@ class AuthorizationEngine(IAuthorizationEngine):
         
         return results
     
+    def _parse_resource(self, resource: Any) -> tuple:
+        """Parse resource to extract type and ID.
+        
+        Returns:
+            Tuple of (resource_type, resource_id)
+        """
+        if isinstance(resource, dict):
+            return resource.get('type'), resource.get('id')
+        elif isinstance(resource, str):
+            return resource, None
+        else:
+            return getattr(resource, 'type', None), getattr(resource, 'id', None)
+    
     def get_allowed_actions(
         self,
         user_id: str,
@@ -483,15 +499,7 @@ class AuthorizationEngine(IAuthorizationEngine):
             List of allowed action names
         """
         # Parse resource
-        if isinstance(resource, dict):
-            resource_type = resource.get('type')
-            resource_id = resource.get('id')
-        elif isinstance(resource, str):
-            resource_type = resource
-            resource_id = None
-        else:
-            resource_type = getattr(resource, 'type', None)
-            resource_id = getattr(resource, 'id', None)
+        resource_type, resource_id = self._parse_resource(resource)
         
         # Get all user permissions for this resource type
         permissions = self.get_user_permissions(user_id, resource_type)
@@ -504,16 +512,12 @@ class AuthorizationEngine(IAuthorizationEngine):
         
         for perm in permissions:
             # Check if permission matches resource type
-            if perm.resource_type != resource_type and perm.resource_type != '*':
+            if not self._permission_matches_request(perm, perm.action, resource_type):
                 continue
             
             # Evaluate ABAC conditions if present
-            if self._enable_abac and perm.conditions:
-                try:
-                    if not self._policy_evaluator.evaluate(perm.conditions, context):
-                        continue
-                except Exception:
-                    continue
+            if not self._evaluate_abac_conditions(perm, context):
+                continue
             
             # Add the action (or all actions if wildcard)
             if perm.action == '*':

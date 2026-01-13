@@ -1,7 +1,6 @@
 import React from 'react';
 import Footer from '@theme-original/Footer';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import Link from '@docusaurus/Link';
 import styles from './styles.module.css';
 
 export default function FooterWrapper(props) {

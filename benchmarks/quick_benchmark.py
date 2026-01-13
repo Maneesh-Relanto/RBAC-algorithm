@@ -26,21 +26,14 @@ def benchmark_simple(operation_name, operation_func, iterations=1000000):
     ops_per_sec = iterations / elapsed
     avg_time_us = (elapsed / iterations) * 1_000_000  # microseconds
     
-    print(f"✓")
+    print("✓")
     print(f"  {ops_per_sec:,.0f} ops/sec ({avg_time_us:.2f} μs per op)")
     
     return ops_per_sec
 
 
-def main():
-    print("=" * 80)
-    print("RBAC ALGORITHM - QUICK PERFORMANCE BENCHMARK")
-    print("=" * 80)
-    
-    # Setup minimal test data
-    print("\nSetting up test data...")
-    rbac = RBAC()
-    
+def setup_test_data(rbac):
+    """Setup minimal test data for benchmarks."""
     # Create 10 permissions
     for i in range(10):
         rbac.create_permission(
@@ -60,7 +53,7 @@ def main():
     
     # Create 10 users
     for i in range(10):
-        user = rbac.create_user(
+        _ = rbac.create_user(
             user_id=f"user_{i}",
             email=f"user{i}@test.com",
             name=f"User {i}",
@@ -75,13 +68,10 @@ def main():
             resource_type="resource",
             domain="test"
         )
-    
-    print("✓ Setup complete")
-    
-    print("\n" + "=" * 80)
-    print("RUNNING BENCHMARKS")
-    print("=" * 80)
-    
+
+
+def run_benchmarks(rbac):
+    """Run all performance benchmarks."""
     results = {}
     
     # Test 1: Storage get operations (fastest)
@@ -117,6 +107,11 @@ def main():
         iterations=100_000
     )
     
+    return results
+
+
+def print_performance_summary(results):
+    """Print formatted performance summary."""
     print("\n" + "=" * 80)
     print("PERFORMANCE SUMMARY")
     print("=" * 80)
@@ -143,6 +138,11 @@ def main():
     print(f"{'Average Performance':<35} {avg_ops:>15,.0f}")
     print(f"{'Peak Performance':<35} {max_ops:>15,.0f}")
     
+    return avg_ops, max_ops
+
+
+def verify_performance_claims(max_ops, avg_ops):
+    """Verify if performance meets claimed benchmarks."""
     print("\n" + "=" * 80)
     print("CLAIM VERIFICATION")
     print("=" * 80)
@@ -154,20 +154,48 @@ def main():
     print(f"📉 Actual Average Performance: {avg_ops:,.0f} ops/sec")
     
     if max_ops >= claim:
-        print(f"\n✅ CLAIM VERIFIED!")
+        print("\n✅ CLAIM VERIFIED!")
         print(f"   Peak operations ({max_ops:,.0f}) meet or exceed claimed performance")
     elif max_ops >= claim * 0.75:
-        print(f"\n⚠️  CLAIM CLOSE:")
+        print("\n⚠️  CLAIM CLOSE:")
         print(f"   Peak operations ({max_ops:,.0f}) are within 25% of claimed performance")
         print(f"   This is {(max_ops/claim)*100:.1f}% of the claim")
     else:
-        print(f"\n❌ CLAIM NOT MET:")
+        print("\n❌ CLAIM NOT MET:")
         print(f"   Peak operations ({max_ops:,.0f}) are {((claim-max_ops)/claim)*100:.1f}% below claim")
     
     print("\n💡 Key Insights:")
     print("   • Storage operations (dict lookups) are fastest: 1M+ ops/sec")
     print("   • Permission checks involve role resolution: 100K+ ops/sec")
     print("   • Complex queries (allowed actions) are slower: 50K+ ops/sec")
+
+
+def main():
+    print("=" * 80)
+    print("RBAC ALGORITHM - QUICK PERFORMANCE BENCHMARK")
+    print("=" * 80)
+    
+    # Setup test data
+    print("\nSetting up test data...")
+    rbac = RBAC()
+    setup_test_data(rbac)
+    print("✓ Setup complete")
+    
+    # Run benchmarks
+    print("\n" + "=" * 80)
+    print("RUNNING BENCHMARKS")
+    print("=" * 80)
+    
+    results = run_benchmarks(rbac)
+    
+    # Print summary
+    avg_ops, max_ops = print_performance_summary(results)
+    
+    # Verify claims
+    verify_performance_claims(max_ops, avg_ops)
+    
+    # Additional insights
+    claim = 2_000_000
     print("   • Real-world performance varies with data size and hierarchy depth")
     
     print("\n🎯 Recommendation:")

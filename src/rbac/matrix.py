@@ -372,6 +372,41 @@ class PermissionsMatrixManager:
             ]
         }
     
+    def _get_display_characters(self):
+        """Get Unicode or ASCII characters for display.
+        
+        Returns:
+            Tuple of (vertical_bar, horizontal_bar, check_mark, cross_mark, up_arrow, warning, bulb)
+        """
+        import sys
+        
+        try:
+            "│".encode(sys.stdout.encoding or 'utf-8')
+            return ("│", "─", "✓", "✗", "⇑", "⚠", "💡")
+        except (UnicodeEncodeError, LookupError, AttributeError):
+            return ("|", "-", "Y", "N", "^", "!", "*")
+    
+    def _format_cell_symbol(self, cell, check_mark, cross_mark, up_arrow, show_inherited):
+        """Get symbol for a matrix cell.
+        
+        Args:
+            cell: MatrixCell or None
+            check_mark: Symbol for granted
+            cross_mark: Symbol for denied
+            up_arrow: Symbol for inherited
+            show_inherited: Whether to show inherited permissions
+            
+        Returns:
+            Display symbol for the cell
+        """
+        if not cell:
+            return '-'
+        
+        if cell.inherited and show_inherited:
+            return up_arrow if cell.granted else cross_mark
+        
+        return check_mark if cell.granted else cross_mark
+    
     def print_matrix(
         self,
         matrix: PermissionsMatrix,
@@ -386,34 +421,14 @@ class PermissionsMatrixManager:
             show_descriptions: Whether to show permission descriptions
             max_role_name_len: Maximum length for role names (truncate if longer)
         """
-        import sys
-        
         if not matrix.rows:
             print("Empty matrix - no permissions or roles found")
             return
         
-        # Check if we can use Unicode characters
-        try:
-            # Try to encode Unicode characters
-            "│".encode(sys.stdout.encoding or 'utf-8')
-            vertical_bar = "│"
-            horizontal_bar = "─"
-            check_mark = "✓"
-            cross_mark = "✗"
-            up_arrow = "⇑"
-            warning = "⚠"
-            bulb = "💡"
-        except (UnicodeEncodeError, LookupError, AttributeError):
-            # Fall back to ASCII characters
-            vertical_bar = "|"
-            horizontal_bar = "-"
-            check_mark = "Y"
-            cross_mark = "N"
-            up_arrow = "^"
-            warning = "!"
-            bulb = "*"
+        # Get display characters
+        vertical_bar, horizontal_bar, check_mark, cross_mark, up_arrow, warning, bulb = self._get_display_characters()
         
-        # Header
+        # Calculate dimensions
         role_names = [r.name[:max_role_name_len] for r in matrix.roles]
         feature_col_width = max(30, max(len(row.feature_name) for row in matrix.rows))
         
@@ -429,13 +444,8 @@ class PermissionsMatrixManager:
             line = f"{row.feature_name:<{feature_col_width}}"
             for role in matrix.roles:
                 cell = row.cells.get(role.id)
-                if cell:
-                    symbol = check_mark if cell.granted else cross_mark
-                    if cell.inherited and matrix.show_inherited:
-                        symbol = up_arrow if cell.granted else cross_mark
-                    line += f" {vertical_bar} {symbol:^{max_role_name_len}}"
-                else:
-                    line += f" {vertical_bar} {'-':^{max_role_name_len}}"
+                symbol = self._format_cell_symbol(cell, check_mark, cross_mark, up_arrow, matrix.show_inherited)
+                line += f" {vertical_bar} {symbol:^{max_role_name_len}}"
             print(line)
             
             if show_descriptions and row.description:

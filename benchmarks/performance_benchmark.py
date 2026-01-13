@@ -163,7 +163,7 @@ class PerformanceBenchmark:
         rbac = RBAC()
         
         # Setup test data
-        users, roles, permissions, resources = self.setup_test_data(
+        _, _, _, _ = self.setup_test_data(
             rbac, 
             num_users=100, 
             num_roles=10, 
