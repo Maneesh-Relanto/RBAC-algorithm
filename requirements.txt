@@ -12,6 +12,13 @@ flake8>=6.0.0
 mypy>=1.0.0
 pylint>=2.17.0
 
+# Priority 1: Advanced Testing & Security
+hypothesis>=6.92.0          # Property-based testing
+safety>=2.3.0               # Dependency vulnerability scanning
+pip-audit>=2.6.0            # Alternative vulnerability scanner
+pytest-xdist>=3.5.0         # Parallel test execution
+pytest-timeout>=2.2.0       # Test timeout protection
+
 # Optional storage backends
 # Uncomment as needed:
 

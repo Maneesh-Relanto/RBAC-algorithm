@@ -84,3 +84,14 @@ def populated_rbac(rbac, sample_user, sample_role, sample_permission, domain):
     rbac.assign_role_to_user(sample_user.id, sample_role.id, domain)
     
     return rbac
+
+
+# Pytest marker registration
+def pytest_configure(config):
+    """Register custom markers."""
+    config.addinivalue_line("markers", "unit: Unit tests (fast, isolated)")
+    config.addinivalue_line("markers", "integration: Integration tests (slower, test component interactions)")
+    config.addinivalue_line("markers", "property: Property-based tests using Hypothesis")
+    config.addinivalue_line("markers", "slow: Slow tests (may take more than 1 second)")
+    config.addinivalue_line("markers", "performance: Performance benchmarks")
+    config.addinivalue_line("markers", "security: Security-related tests")

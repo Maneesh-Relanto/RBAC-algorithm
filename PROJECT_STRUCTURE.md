@@ -51,15 +51,34 @@ RBAC algorithm/
 │       └── rbac.py               # Main RBAC class
 │
 ├── 📂 tests/                       # Test suite
-│   ├── conftest.py               # PyTest fixtures
-│   ├── test_models.py            # Model tests
-│   ├── test_storage.py           # Storage tests
-│   └── test_rbac.py              # Integration tests
+│   ├── 📂 property/               # Property-based tests (Hypothesis)
+│   │   ├── __init__.py
+│   │   ├── test_role_invariants.py
+│   │   └── test_authorization_invariants.py
+│   ├── 📂 integration/            # Integration tests (workflows)
+│   │   ├── __init__.py
+│   │   └── test_complete_workflows.py
+│   ├── conftest.py               # PyTest fixtures & markers
+│   ├── test_models.py            # Model unit tests
+│   ├── test_storage.py           # Storage unit tests
+│   ├── test_rbac.py              # RBAC unit tests
+│   ├── test_permissions_matrix.py # Permission matrix tests
+│   └── PRIORITY1_README.md       # Priority 1 validation guide
+│
+├── 📂 scripts/                     # Utility scripts
+│   ├── validate-priority1.ps1    # Run all Priority 1 validations (Windows)
+│   ├── validate-priority1.sh     # Run all Priority 1 validations (Linux/Mac)
+│   ├── scan-vulnerabilities.ps1  # Security vulnerability scanner (Windows)
+│   ├── scan-vulnerabilities.sh   # Security vulnerability scanner (Linux/Mac)
+│   ├── validate-code.bat/.sh     # Code quality validation
+│   └── start-docs.bat/.sh        # Start documentation server
 │
 ├── .gitignore                     # Git ignore rules
+├── pytest.ini                     # PyTest configuration (coverage, markers, etc.)
 ├── LICENSE                        # MIT License
 ├── README.md                      # Main project readme
-├── requirements.txt               # Production dependencies
+├── PRIORITY1_COMPLETE.md          # Priority 1 validation summary
+├── requirements.txt               # All dependencies (dev + prod)
 └── setup.py                       # Package installation
 ```
 
