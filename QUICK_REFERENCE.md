@@ -7,9 +7,12 @@ Root Files (Essential Only)
 ├── README.md                    Main documentation
 ├── LICENSE                      MIT License  
 ├── .gitignore                   Git rules
-├── requirements.txt             Production dependencies
+├── requirements.txt             All dependencies
 ├── setup.py                     Package install
-└── PROJECT_STRUCTURE.md         This guide
+├── pytest.ini                   Test configuration
+├── PROJECT_STRUCTURE.md         Directory guide
+├── PRIORITY1_COMPLETE.md        Priority 1 validation summary
+└── QUICK_REFERENCE.md           This guide
 
 .quality/                        Code Quality & Analysis
 ├── sonarqube/                   SonarQube configuration
@@ -21,10 +24,23 @@ Root Files (Essential Only)
 └── requirements-dev.txt         Dev dependencies
 
 scripts/                         Utility Scripts
-├── validate-code.bat           Quality check (Windows)
-├── validate-code.sh            Quality check (Unix)
-├── start-docs.bat              Start docs (Windows)
-└── start-docs.sh               Start docs (Unix)
+├── validate-priority1.ps1/.sh  🎯 Run all Priority 1 validations
+├── scan-vulnerabilities.ps1/.sh 🔒 Security vulnerability scan
+├── validate-code.bat/.sh        Code quality check
+├── start-docs.bat/.sh           Start docs website
+└── [Interactive docs in docs/]
+
+tests/                           Test Suite
+├── property/                    🧪 Property-based tests (Hypothesis)
+│   ├── test_role_invariants.py
+│   └── test_authorization_invariants.py
+├── integration/                 🔗 Integration tests
+│   └── test_complete_workflows.py
+├── test_models.py               Unit tests
+├── test_rbac.py                 Unit tests
+├── test_storage.py              Unit tests
+├── conftest.py                  PyTest fixtures & markers
+└── PRIORITY1_README.md          Priority 1 testing guide
 
 docs/                            Documentation
 ├── CONTRIBUTING.md             How to contribute
@@ -34,6 +50,20 @@ docs/                            Documentation
 ```
 
 ## ⚡ Quick Commands
+
+### 🎯 Priority 1 Validation (Recommended)
+```bash
+# Run ALL Priority 1 validations at once
+.\scripts\validate-priority1.ps1         # Windows
+bash scripts/validate-priority1.sh        # Linux/Mac
+
+# Individual Priority 1 checks
+pytest tests/property/ -m property        # Property-based tests
+pytest tests/integration/ -m integration  # Integration tests
+pytest tests/ --cov=src --cov-branch     # Branch coverage (95%+)
+.\scripts\scan-vulnerabilities.ps1       # Security scan (Windows)
+bash scripts/scan-vulnerabilities.sh      # Security scan (Linux/Mac)
+```
 
 ### Development
 ```bash
@@ -89,7 +119,12 @@ pip install -e .
 ## 🎯 Common Tasks
 
 | Task | Command |
-|------|---------|
+|------|---------||
+| 🎯 **Run Priority 1 validations** | `.\scripts\validate-priority1.ps1` |
+| 🔒 Scan for vulnerabilities | `.\scripts\scan-vulnerabilities.ps1` |
+| 🧪 Run property-based tests | `pytest tests/property/ -m property` |
+| 🔗 Run integration tests | `pytest tests/integration/ -m integration` |
+| 📈 Run with branch coverage | `pytest --cov=src --cov-branch --cov-report=html` |
 | Run all quality checks | `.\scripts\validate-code.bat` |
 | Start docs locally | `.\scripts\start-docs.bat` → http://localhost:3001 |
 | Run tests with coverage | `pytest --cov=src tests/` |
