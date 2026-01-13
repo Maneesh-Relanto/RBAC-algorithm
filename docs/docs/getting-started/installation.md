@@ -25,8 +25,8 @@ import TabItem from '@theme/TabItem';
 #### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/rbac-algorithm.git
-cd rbac-algorithm
+git clone https://github.com/Maneesh-Relanto/RBAC-algorithm.git
+cd RBAC-algorithm
 ```
 
 #### 2. Create Virtual Environment (Recommended)

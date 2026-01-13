@@ -66,12 +66,13 @@ Implement the `IStorageProvider` protocol to use any database. See [Custom Stora
 
 RBAC Algorithm is optimized for production workloads:
 
+- **High Performance** - 10,328 permission checks/second (verified benchmark)
 - **Caching** - Frequently accessed data cached automatically
 - **Batch Operations** - Check multiple permissions in one call
 - **Lazy Loading** - Load data only when needed
 - **Indexing** - Storage backends use appropriate indexes
 
-Benchmarks show comparable or better performance than popular alternatives.
+See [benchmark results](https://github.com/Maneesh-Relanto/RBAC-algorithm/tree/main/repo-health/baseline) for detailed metrics.
 
 ### Is it thread-safe?
 

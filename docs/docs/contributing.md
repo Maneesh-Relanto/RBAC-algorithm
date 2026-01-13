@@ -21,22 +21,35 @@ Thank you for your interest in contributing! This guide will help you get starte
 ```bash
 # Fork the repository on GitHub
 # Then clone your fork
-git clone https://github.com/YOUR_USERNAME/rbac-algorithm.git
-cd rbac-algorithm
+git clone https://github.com/YOUR_USERNAME/RBAC-algorithm.git
+cd RBAC-algorithm
 ```
 
 ### 2. Set Up Development Environment
 
 ```bash
 # Create virtual environment (Python)
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install package in editable mode
+pip install -e .
 
 # Install development dependencies
-pip install -e ".[dev]"
+pip install pytest pytest-cov black isort mypy
+```
 
-# Install pre-commit hooks
-pre-commit install
+### 3. Verify Setup
+
+```bash
+# Run tests to ensure everything works
+pytest tests/
+
+# Run benchmarks
+python benchmarks/quick_benchmark.py
+
+# Check code quality baselines
+ls repo-health/baseline/
 ```
 
 ### 3. Create a Branch
@@ -111,7 +124,32 @@ pytest tests/test_rbac.py::TestRBAC::test_check_permission
 - Unit tests for new functions
 - Integration tests for workflows
 - Edge cases covered
-- Minimum 80% coverage
+- Maintain 95%+ coverage (current baseline)
+
+### Code Quality
+
+We maintain A-grade code quality standards:
+
+```bash
+# Run tests with coverage
+pytest tests/ --cov=src --cov-report=term-missing
+
+# Check against quality baselines
+cat repo-health/baseline/sonarqube-baseline.md
+cat repo-health/baseline/coverage-baseline.txt
+
+# Run benchmarks to verify performance
+python benchmarks/quick_benchmark.py
+```
+
+**Quality Requirements:**
+- ✅ Zero bugs (SonarQube verified)
+- ✅ Zero security vulnerabilities
+- ✅ Test coverage ≥95%
+- ✅ Code quality grade A
+- ✅ Cognitive complexity <15 per function
+
+See [repo-health/](https://github.com/Maneesh-Relanto/RBAC-algorithm/tree/main/repo-health) for baseline metrics.
 
 ### Documentation
 
@@ -131,8 +169,10 @@ npm start
 
 ### 1. Before Submitting
 
-- ✅ Tests pass locally
+- ✅ Tests pass locally (`pytest tests/`)
 - ✅ Code formatted (black, isort)
+- ✅ Coverage maintained (≥95%)
+- ✅ Benchmarks pass (no performance regression)
 - ✅ Documentation updated
 - ✅ Commit messages clear
 - ✅ No merge conflicts

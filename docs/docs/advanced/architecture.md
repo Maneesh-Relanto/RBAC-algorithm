@@ -110,6 +110,6 @@ class CustomEngine(IAuthorizationEngine):
 
 ## Learn More
 
-- [Protocol Specification](https://github.com/yourusername/rbac-algorithm/blob/main/documentation/architecture/PROTOCOL.md)
-- [Adapter Guidelines](https://github.com/yourusername/rbac-algorithm/blob/main/documentation/architecture/ADAPTERS.md)
+- [Protocol Specification](https://github.com/Maneesh-Relanto/RBAC-algorithm/blob/main/documentation/architecture/PROTOCOL.md)
+- [Adapter Guidelines](https://github.com/Maneesh-Relanto/RBAC-algorithm/blob/main/documentation/architecture/ADAPTERS.md)
 - [API Reference](/docs/api/overview)
