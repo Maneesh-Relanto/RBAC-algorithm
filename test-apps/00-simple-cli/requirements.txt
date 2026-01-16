@@ -1,0 +1,2 @@
+# No external dependencies - uses built-in Python only
+# RBAC library itself is installed via: pip install -e ../../

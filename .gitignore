@@ -104,6 +104,11 @@ confidential/
 **/confidential/
 *.confidential.*
 
+# Internal documentation (for development understanding only)
+temp-internal/
+**/temp-internal/
+temp/
+
 # LinkedIn and marketing content
 LINKEDIN_POST_STATUS.md
 URGENT_PERFORMANCE_UPDATE.md
