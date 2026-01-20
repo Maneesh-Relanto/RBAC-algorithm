@@ -1,0 +1,29 @@
+# Code Owners for RBAC Algorithm
+
+# Default owner for everything in the repo
+* @Maneesh-Relanto
+
+# Core RBAC implementation requires careful review
+/src/rbac/ @Maneesh-Relanto
+
+# Test files must be reviewed to ensure coverage
+/tests/ @Maneesh-Relanto
+
+# Documentation changes
+/docs/ @Maneesh-Relanto
+/documentation/ @Maneesh-Relanto
+*.md @Maneesh-Relanto
+
+# Security-sensitive files require extra scrutiny
+/schemas/ @Maneesh-Relanto
+/scripts/ @Maneesh-Relanto
+
+# Configuration files
+*.yml @Maneesh-Relanto
+*.yaml @Maneesh-Relanto
+*.json @Maneesh-Relanto
+requirements.txt @Maneesh-Relanto
+setup.py @Maneesh-Relanto
+
+# GitHub workflows and actions
+/.github/ @Maneesh-Relanto
