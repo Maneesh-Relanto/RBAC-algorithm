@@ -46,9 +46,6 @@ def require_permission(action: str, resource_type: str = None, check_ownership: 
             rbac = g.rbac
             storage = g.storage
             
-            # Build permission string
-            permission = f"{action}:{resource_type}" if resource_type else action
-            
             # Get resource for ownership check
             resource = None
             if check_ownership:

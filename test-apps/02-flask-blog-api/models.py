@@ -3,7 +3,7 @@ Data models for Flask Blog API.
 Simple dataclass-based models for posts, comments, and users.
 """
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, List
 from enum import Enum
 
@@ -56,8 +56,8 @@ class Post:
     author_id: str
     author_username: str
     status: PostStatus = PostStatus.DRAFT
-    created_at: datetime = field(default_factory=datetime.utcnow)
-    updated_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     published_at: Optional[datetime] = None
     tags: List[str] = field(default_factory=list)
     view_count: int = 0
@@ -110,8 +110,8 @@ class Comment:
     content: str
     author_id: str
     author_username: str
-    created_at: datetime = field(default_factory=datetime.utcnow)
-    updated_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     is_deleted: bool = False
     
     def to_dict(self, include_author: bool = True) -> dict:

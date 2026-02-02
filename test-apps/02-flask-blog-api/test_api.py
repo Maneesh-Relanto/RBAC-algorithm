@@ -154,7 +154,6 @@ def test_list_posts_authenticated(client, tokens):
     """Test listing posts with authentication."""
     response = client.get('/posts', headers=get_auth_header(tokens['author']))
     assert response.status_code == 200
-    data = response.json
     # Authenticated users can see their own drafts + published posts
 
 
