@@ -6,6 +6,25 @@ sidebar_position: 1
 
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
   <img src="/img/logo.svg" alt="RBAC Algorithm Logo" width="150" style={{marginBottom: '1rem'}} />
+  
+  <div style={{marginTop: '1rem'}}>
+    <a href="https://mthakur-rbac-algorithm.streamlit.app/" target="_blank" rel="noopener noreferrer" style={{
+      display: 'inline-block',
+      padding: '12px 24px',
+      backgroundColor: '#FF4B4B',
+      color: 'white',
+      textDecoration: 'none',
+      borderRadius: '8px',
+      fontWeight: 'bold',
+      fontSize: '1.1rem',
+      marginBottom: '1rem'
+    }}>
+      🎮 Try Interactive Demo →
+    </a>
+    <p style={{fontSize: '0.9rem', color: '#666'}}>
+      Experiment with RBAC features in real-time - No installation required!
+    </p>
+  </div>
 </div>
 
 Welcome to **RBAC Algorithm** - a powerful, enterprise-grade Role-Based Access Control library designed for modern applications.
