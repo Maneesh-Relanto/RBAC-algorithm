@@ -9,11 +9,16 @@
 </p>
 
 <p align="center">
+  <a href="https://mthakur-rbac-algorithm.streamlit.app/">🎮 Try Live Demo</a> •
   <a href="#-interactive-documentation">📖 Interactive Docs</a> •
   <a href="#-quick-start">⚡ Quick Start</a> •
   <a href="#-key-features">✨ Features</a> •
   <a href="PROJECT_STRUCTURE.md">📁 Project Structure</a> •
   <a href="docs/CONTRIBUTING.md">🤝 Contributing</a>
+</p>
+
+<p align="center">
+  <a href="https://mthakur-rbac-algorithm.streamlit.app/"><img src="https://img.shields.io/badge/🎮_Live_Demo-Try_Now-blue?style=for-the-badge" alt="Live Demo"></a>
 </p>
 
 <p align="center">
