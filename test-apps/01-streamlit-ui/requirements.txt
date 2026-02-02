@@ -1,2 +1,1 @@
 streamlit>=1.28.0
-../..  # Install the RBAC library from the repository root
