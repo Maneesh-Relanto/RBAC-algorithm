@@ -3,7 +3,7 @@ In-memory storage for Flask Blog API.
 Provides simple CRUD operations for users, posts, and comments.
 """
 from typing import List, Optional, Dict
-from datetime import datetime
+from datetime import datetime, timezone
 from models import User, Post, Comment, PostStatus, SystemStats
 
 

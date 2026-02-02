@@ -2,7 +2,7 @@
 Seed data for Flask Blog API.
 Loads sample users, posts, and comments for testing.
 """
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from models import PostStatus
 
 
@@ -227,7 +227,7 @@ Always keep security in mind!''',
         # Adjust created_at for variety
         if post.status == PostStatus.PUBLISHED:
             days_ago = len(created_posts)
-            post.created_at = datetime.utcnow() - timedelta(days=days_ago)
+            post.created_at = datetime.now(timezone.utc) - timedelta(days=days_ago)
             post.published_at = post.created_at
         
         print(f"  ✓ Created post: '{post.title}' by {author.username}")
@@ -286,7 +286,7 @@ Always keep security in mind!''',
         if comment:
             print(f"  ✓ Created comment by {author.username} on '{post.title}'")
     
-    print(f"\nSeed data loaded successfully!")
+    print("\nSeed data loaded successfully!")
     print(f"  Users: {len(created_users)}")
     print(f"  Posts: {len(created_posts)} ({len([p for p in created_posts if p.status == PostStatus.PUBLISHED])} published)")
     print(f"  Comments: {len(comments_data)}")

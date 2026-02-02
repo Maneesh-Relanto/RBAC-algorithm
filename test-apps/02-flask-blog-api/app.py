@@ -4,7 +4,7 @@ A complete REST API demonstrating RBAC Algorithm integration.
 """
 from flask import Flask, jsonify, request, g
 from flask_cors import CORS
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Local imports
 from config import get_config
@@ -15,6 +15,13 @@ from models import PostStatus
 
 # RBAC imports
 from rbac import RBAC
+
+# Constants for error messages
+ERROR_NOT_FOUND = 'Not found'
+ERROR_VALIDATION = 'Validation error'
+MSG_POST_NOT_FOUND = 'Post not found'
+MSG_AUTH_REQUIRED = 'Authentication required'
+MSG_LOGIN_REQUIRED = 'You must be logged in to perform this action'
 
 
 def create_app(config_name='development'):
@@ -60,7 +67,7 @@ def create_app(config_name='development'):
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
-            'error': 'Not found',
+            'error': ERROR_NOT_FOUND,
             'message': 'The requested resource was not found'
         }), 404
     
@@ -196,7 +203,7 @@ def create_app(config_name='development'):
         
         if not user_data:
             return jsonify({
-                'error': 'Not found',
+                'error': ERROR_NOT_FOUND,
                 'message': 'User not found'
             }), 404
         
@@ -315,7 +322,7 @@ def create_app(config_name='development'):
     def update_post(post_id):
         """Update a post (must be owner or editor/admin)."""
         data = request.get_json()
-        post = g.resource  # Set by decorator
+        # Resource validated by decorator
         
         title = data.get('title')
         content = data.get('content')
@@ -499,15 +506,13 @@ def create_app(config_name='development'):
             # Get current roles
             user_details = rbac.get_user(rbac_user_id)
             if user_details:
-                # Remove old role assignment
-                old_role_id = f"role_{user.role}"
-                # Note: The RBAC library should have revoke_role, but we'll handle it simply
+                # Note: The RBAC library should have revoke_role
                 # by reassigning - the library should handle this internally
                 pass
             
             # Assign new role
             rbac.assign_role(rbac_user_id, f"role_{new_role}")
-        except Exception as e:
+        except Exception:
             # If user doesn't exist in RBAC, create them
             try:
                 rbac.create_user(
@@ -516,7 +521,7 @@ def create_app(config_name='development'):
                     name=user.username
                 )
                 rbac.assign_role(rbac_user_id, f"role_{new_role}")
-            except:
+            except Exception:
                 pass  # User might already exist
         
         return jsonify({
@@ -615,7 +620,7 @@ def setup_rbac(rbac: RBAC):
 
 if __name__ == '__main__':
     app = create_app('development')
-    print(f"""
+    print("""
     ╔════════════════════════════════════════════════╗
     ║   Flask Blog API - RBAC Test Application      ║
     ╠════════════════════════════════════════════════╣

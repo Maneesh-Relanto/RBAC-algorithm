@@ -4,7 +4,7 @@ Handles user authentication, token generation, and verification.
 """
 import jwt
 import bcrypt
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from functools import wraps
 from flask import request, jsonify, g
 from config import Config
@@ -35,8 +35,8 @@ class AuthManager:
             'user_id': user_id,
             'username': username,
             'role': role,
-            'iat': datetime.utcnow(),
-            'exp': datetime.utcnow() + self.expiration
+            'iat': datetime.now(timezone.utc),
+            'exp': datetime.now(timezone.utc) + self.expiration
         }
         token = jwt.encode(payload, self.secret_key, algorithm=self.algorithm)
         return token
@@ -55,12 +55,12 @@ class AuthManager:
         payload = jwt.decode(token, self.secret_key, algorithms=[self.algorithm])
         return payload
     
-    def extract_token_from_header(self) -> str:
+    def extract_token_from_header(self) -> str | None:
         """
         Extract JWT token from Authorization header.
         
         Returns:
-            str: Token string or None if not found
+            str | None: Token string or None if not found
         """
         auth_header = request.headers.get('Authorization', '')
         if auth_header.startswith('Bearer '):
