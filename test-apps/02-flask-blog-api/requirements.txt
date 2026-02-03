@@ -18,11 +18,10 @@ python-dotenv>=1.0.0
 
 # Testing
 pytest>=9.0.2
+pytest-cov>=4.1.0
 
 # HTTP Library (secure version)
 requests>=2.32.0
-pytest-cov==4.1.0
-requests==2.31.0
 
 # RBAC Algorithm (local development)
 # Install with: pip install -e ../../
