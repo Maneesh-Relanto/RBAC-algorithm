@@ -415,11 +415,10 @@ RBAC algorithm/
 ```
 
 **Quick References:**
-- 📖 **[Project Structure](PROJECT_STRUCTURE.md)** - Detailed directory guide
+- 📖 **[Project Structure](documentation/architecture/ARCHITECTURE.md)** - Architecture and directory guide
 - ⚡ **[Quick Reference](QUICK_REFERENCE.md)** - Commands & shortcuts
 - 🧪 **[Testing Guide](docs/TESTING.md)** - How to test & validate code
-- 🔍 **[Fix Summary](docs/FIX_SUMMARY.md)** - SonarQube fixes documentation
-- ✅ **[Priority 1 Validation](PRIORITY1_COMPLETE.md)** - Advanced validation overview
+- ✅ **[Priority 1 Validation](tests/PRIORITY1_README.md)** - Property-based & integration testing guide
 
 **Common Commands:**
 ```bash
