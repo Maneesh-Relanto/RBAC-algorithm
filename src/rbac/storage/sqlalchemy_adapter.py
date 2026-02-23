@@ -75,6 +75,10 @@ logger = logging.getLogger(__name__)
 # ORM declarations
 # ---------------------------------------------------------------------------
 
+# FK target constant – avoids repeating the table.column string literal
+_FK_ROLES_ID = "rbac_roles.id"
+
+
 class _Base(DeclarativeBase):
     """Shared declarative base for all RBAC ORM models."""
 
@@ -83,7 +87,7 @@ class _Base(DeclarativeBase):
 _role_permissions = Table(
     "rbac_role_permissions",
     _Base.metadata,
-    Column("role_id", String(255), ForeignKey("rbac_roles.id", ondelete="CASCADE"), nullable=False),
+    Column("role_id", String(255), ForeignKey(_FK_ROLES_ID, ondelete="CASCADE"), nullable=False),
     Column("permission_id", String(255), ForeignKey("rbac_permissions.id", ondelete="CASCADE"), nullable=False),
     UniqueConstraint("role_id", "permission_id", name="uq_role_permission"),
 )
@@ -119,7 +123,7 @@ class _RoleRow(_Base):
     id = Column(String(255), primary_key=True)
     name = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
-    parent_id = Column(String(255), ForeignKey("rbac_roles.id", ondelete="SET NULL"), nullable=True)
+    parent_id = Column(String(255), ForeignKey(_FK_ROLES_ID, ondelete="SET NULL"), nullable=True)
     domain = Column(String(255), nullable=True)
     status = Column(String(50), nullable=False, default="active")
     metadata_json = Column(Text, nullable=False, default="{}")
@@ -175,7 +179,7 @@ class _RoleAssignmentRow(_Base):
 
     id = Column(String(255), primary_key=True)  # composite surrogate
     user_id = Column(String(255), ForeignKey("rbac_users.id", ondelete="CASCADE"), nullable=False)
-    role_id = Column(String(255), ForeignKey("rbac_roles.id", ondelete="CASCADE"), nullable=False)
+    role_id = Column(String(255), ForeignKey(_FK_ROLES_ID, ondelete="CASCADE"), nullable=False)
     domain = Column(String(255), nullable=True)
     granted_by = Column(String(255), nullable=True)
     granted_at = Column(DateTime(timezone=True), nullable=False)
@@ -398,7 +402,7 @@ class SQLAlchemyStorage(BaseStorage):
             kwargs["connect_args"] = {"check_same_thread": False}
 
         self._engine = create_engine(database_url, **kwargs)
-        self._Session = sessionmaker(bind=self._engine, expire_on_commit=False)
+        self._session_factory = sessionmaker(bind=self._engine, expire_on_commit=False)
 
     # ------------------------------------------------------------------
     # Lifecycle
@@ -433,7 +437,7 @@ class SQLAlchemyStorage(BaseStorage):
     @contextmanager
     def _session(self) -> Generator[Session, None, None]:
         """Provide a transactional session scope."""
-        session: Session = self._Session()
+        session: Session = self._session_factory()
         try:
             yield session
             session.commit()

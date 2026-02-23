@@ -6,6 +6,13 @@ Identical dataset to the Flask test-app for easy comparison.
 from datetime import datetime, timezone
 from models import PostStatus
 
+# ---------------------------------------------------------------------------
+# Post-title constants (reused across seeding and comment linking)
+# ---------------------------------------------------------------------------
+TITLE_RBAC_INTRO = "Getting Started with RBAC"
+TITLE_FASTAPI_REST = "Building REST APIs with FastAPI"
+TITLE_SECURITY = "Security Best Practices for Web APIs"
+
 
 def load_seed_data(storage, rbac, auth_manager) -> None:
     """Populate storage and RBAC with demo data."""
@@ -13,14 +20,14 @@ def load_seed_data(storage, rbac, auth_manager) -> None:
     print("Loading seed data...")
 
     # ------------------------------------------------------------------
-    # Users
+    # Users  (passwords are intentional demo-only values)
     # ------------------------------------------------------------------
     users_data = [
-        {"username": "admin",       "email": "admin@blogapi.com",  "password": "admin123",  "role": "admin"},
-        {"username": "editor",      "email": "editor@blogapi.com", "password": "editor123", "role": "editor"},
-        {"username": "john_author", "email": "john@blogapi.com",   "password": "author123", "role": "author"},
-        {"username": "jane_author", "email": "jane@blogapi.com",   "password": "author123", "role": "author"},
-        {"username": "bob_reader",  "email": "bob@blogapi.com",    "password": "reader123", "role": "reader"},
+        {"username": "admin",       "email": "admin@blogapi.com",  "password": "admin123",  "role": "admin"},   # NOSONAR
+        {"username": "editor",      "email": "editor@blogapi.com", "password": "editor123", "role": "editor"},  # NOSONAR
+        {"username": "john_author", "email": "john@blogapi.com",   "password": "author123", "role": "author"},  # NOSONAR
+        {"username": "jane_author", "email": "jane@blogapi.com",   "password": "author123", "role": "author"},  # NOSONAR
+        {"username": "bob_reader",  "email": "bob@blogapi.com",    "password": "reader123", "role": "reader"},  # NOSONAR
     ]
 
     created_users: dict = {}
@@ -43,7 +50,7 @@ def load_seed_data(storage, rbac, auth_manager) -> None:
     # ------------------------------------------------------------------
     posts_data = [
         {
-            "title": "Getting Started with RBAC",
+            "title": TITLE_RBAC_INTRO,
             "content": "Role-Based Access Control (RBAC) is a powerful authorization model. "
                        "In this post we explore the fundamentals and key concepts including "
                        "Users, Roles, Permissions, and Resources.",
@@ -52,7 +59,7 @@ def load_seed_data(storage, rbac, auth_manager) -> None:
             "tags": ["rbac", "security", "tutorial"],
         },
         {
-            "title": "Building REST APIs with FastAPI",
+            "title": TITLE_FASTAPI_REST,
             "content": "FastAPI is a modern, high-performance Python framework for building APIs. "
                        "It features automatic OpenAPI docs, Pydantic models, and native async support.",
             "author": "john_author",
@@ -76,7 +83,7 @@ def load_seed_data(storage, rbac, auth_manager) -> None:
             "tags": ["content", "management"],
         },
         {
-            "title": "Security Best Practices for Web APIs",
+            "title": TITLE_SECURITY,
             "content": "Securing your API requires more than just authentication. "
                        "We cover authorization, rate limiting, input validation, and audit logging.",
             "author": "editor",
@@ -103,13 +110,13 @@ def load_seed_data(storage, rbac, auth_manager) -> None:
     # Comments
     # ------------------------------------------------------------------
     comments_data = [
-        {"post": "Getting Started with RBAC",    "author": "bob_reader",  "content": "Great intro to RBAC!"},
-        {"post": "Getting Started with RBAC",    "author": "jane_author", "content": "Really well explained."},
-        {"post": "Building REST APIs with FastAPI","author": "bob_reader", "content": "FastAPI is amazing, thanks!"},
-        {"post": "Building REST APIs with FastAPI","author": "editor",     "content": "Good overview of FastAPI."},
+        {"post": TITLE_RBAC_INTRO,     "author": "bob_reader",  "content": "Great intro to RBAC!"},
+        {"post": TITLE_RBAC_INTRO,     "author": "jane_author", "content": "Really well explained."},
+        {"post": TITLE_FASTAPI_REST,   "author": "bob_reader",  "content": "FastAPI is amazing, thanks!"},
+        {"post": TITLE_FASTAPI_REST,   "author": "editor",      "content": "Good overview of FastAPI."},
         {"post": "Managing Blog Content at Scale","author": "john_author","content": "Very useful editorial tips."},
-        {"post": "Security Best Practices for Web APIs","author": "john_author","content": "Great coverage of auth patterns."},
-        {"post": "Security Best Practices for Web APIs","author": "bob_reader", "content": "Can you cover OAuth next?"},
+        {"post": TITLE_SECURITY,       "author": "john_author", "content": "Great coverage of auth patterns."},
+        {"post": TITLE_SECURITY,       "author": "bob_reader",  "content": "Can you cover OAuth next?"},
     ]
 
     for cd in comments_data:
@@ -124,7 +131,7 @@ def load_seed_data(storage, rbac, auth_manager) -> None:
             )
 
     stats = storage.get_stats()
-    print(f"\nSeed data loaded successfully!")
+    print("\nSeed data loaded successfully!")
     print(f"  Users: {stats.total_users}")
     print(f"  Posts: {stats.total_posts} ({stats.published_posts} published)")
     print(f"  Comments: {stats.total_comments}")

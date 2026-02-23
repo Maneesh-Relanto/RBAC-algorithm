@@ -93,7 +93,7 @@ class InMemoryStorage:
         )
         
         if status == PostStatus.PUBLISHED:
-            post.published_at = datetime.utcnow()
+            post.published_at = datetime.now(timezone.utc)
         
         self.posts[post_id] = post
         return post
@@ -141,12 +141,12 @@ class InMemoryStorage:
             post.status = status
             # Set published_at when transitioning to published
             if status == PostStatus.PUBLISHED and old_status != PostStatus.PUBLISHED:
-                post.published_at = datetime.utcnow()
+                post.published_at = datetime.now(timezone.utc)
         
         if tags is not None:
             post.tags = tags
         
-        post.updated_at = datetime.utcnow()
+        post.updated_at = datetime.now(timezone.utc)
         
         return post
     
@@ -213,7 +213,7 @@ class InMemoryStorage:
             return None
         
         comment.content = content
-        comment.updated_at = datetime.utcnow()
+        comment.updated_at = datetime.now(timezone.utc)
         
         return comment
     
@@ -232,7 +232,7 @@ class InMemoryStorage:
         if soft:
             comment.is_deleted = True
             comment.content = '[deleted]'
-            comment.updated_at = datetime.utcnow()
+            comment.updated_at = datetime.now(timezone.utc)
         else:
             del self.comments[comment_id]
         

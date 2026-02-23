@@ -8,6 +8,10 @@ from typing import Optional, List
 from enum import Enum
 
 
+def _utcnow() -> datetime:
+    return datetime.now(timezone.utc)
+
+
 class PostStatus(str, Enum):
     """Post status enumeration."""
     DRAFT = 'draft'
@@ -23,7 +27,7 @@ class User:
     email: str
     password_hash: str
     role: str  # admin, editor, author, reader
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=_utcnow)
     
     def to_dict(self, include_password: bool = False) -> dict:
         """Convert user to dictionary (excluding password by default)."""

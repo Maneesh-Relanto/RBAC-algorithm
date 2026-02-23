@@ -22,9 +22,9 @@ class TestCompleteAuthorizationFlow:
         # Step 1: Create a user
         user = User(
             id="alice",
-            username="alice_admin",
+            name="alice_admin",
             email="alice@example.com",
-            metadata={"department": "engineering"}
+            attributes={"department": "engineering"}
         )
         rbac._storage.store_user(user)
         
@@ -32,7 +32,7 @@ class TestCompleteAuthorizationFlow:
         resource = Resource(
             id="doc_1",
             type="document",
-            metadata={"classification": "public"}
+            attributes={"classification": "public"}
         )
         rbac._storage.store_resource(resource)
         
@@ -40,12 +40,12 @@ class TestCompleteAuthorizationFlow:
         read_perm = Permission(
             id="perm_read",
             action="read",
-            resource=resource
+            resource_type=resource.type
         )
         write_perm = Permission(
             id="perm_write",
             action="write",
-            resource=resource
+            resource_type=resource.type
         )
         rbac._storage.store_permission(read_perm)
         rbac._storage.store_permission(write_perm)
@@ -78,7 +78,7 @@ class TestCompleteAuthorizationFlow:
         # Create user
         user = User(
             id="bob",
-            username="bob_user",
+            name="bob_user",
             email="bob@example.com"
         )
         rbac._storage.store_user(user)
@@ -88,9 +88,9 @@ class TestCompleteAuthorizationFlow:
         rbac._storage.store_resource(resource)
         
         # Create permissions
-        read_perm = Permission(id="perm_read", action="read", resource=resource)
-        write_perm = Permission(id="perm_write", action="write", resource=resource)
-        admin_perm = Permission(id="perm_admin", action="admin", resource=resource)
+        read_perm = Permission(id="perm_read", action="read", resource_type=resource.type)
+        write_perm = Permission(id="perm_write", action="write", resource_type=resource.type)
+        admin_perm = Permission(id="perm_admin", action="admin", resource_type=resource.type)
         
         rbac._storage.store_permission(read_perm)
         rbac._storage.store_permission(write_perm)
@@ -133,7 +133,7 @@ class TestCompleteAuthorizationFlow:
         rbac = RBAC(storage='memory')
         
         # Create user
-        user = User(id="charlie", username="charlie", email="charlie@example.com")
+        user = User(id="charlie", name="charlie", email="charlie@example.com")
         rbac._storage.store_user(user)
         
         # Create resources
@@ -143,9 +143,9 @@ class TestCompleteAuthorizationFlow:
         rbac._storage.store_resource(db_resource)
         
         # Create permissions for different resources
-        doc_read = Permission(id="perm_doc_read", action="read", resource=doc_resource)
-        db_read = Permission(id="perm_db_read", action="read", resource=db_resource)
-        db_write = Permission(id="perm_db_write", action="write", resource=db_resource)
+        doc_read = Permission(id="perm_doc_read", action="read", resource_type=doc_resource.type)
+        db_read = Permission(id="perm_db_read", action="read", resource_type=db_resource.type)
+        db_write = Permission(id="perm_db_write", action="write", resource_type=db_resource.type)
         
         rbac._storage.store_permission(doc_read)
         rbac._storage.store_permission(db_read)
@@ -187,7 +187,7 @@ class TestCompleteAuthorizationFlow:
         # Create active user with permissions
         user = User(
             id="dave",
-            username="dave",
+            name="dave",
             email="dave@example.com",
             status=EntityStatus.ACTIVE
         )
@@ -196,7 +196,7 @@ class TestCompleteAuthorizationFlow:
         resource = Resource(id="file_1", type="file")
         rbac._storage.store_resource(resource)
         
-        permission = Permission(id="perm_read", action="read", resource=resource)
+        permission = Permission(id="perm_read", action="read", resource_type=resource.type)
         rbac._storage.store_permission(permission)
         
         role = Role(id="role_reader", name="Reader", permissions={permission})
@@ -212,7 +212,7 @@ class TestCompleteAuthorizationFlow:
         # Suspend user
         suspended_user = User(
             id="dave",
-            username="dave",
+            name="dave",
             email="dave@example.com",
             status=EntityStatus.SUSPENDED
         )
@@ -224,7 +224,7 @@ class TestCompleteAuthorizationFlow:
         # Reactivate user
         active_user = User(
             id="dave",
-            username="dave",
+            name="dave",
             email="dave@example.com",
             status=EntityStatus.ACTIVE
         )
@@ -238,8 +238,8 @@ class TestCompleteAuthorizationFlow:
         rbac = RBAC(storage='memory')
         
         # Create two users
-        user1 = User(id="user1", username="user1", email="user1@example.com")
-        user2 = User(id="user2", username="user2", email="user2@example.com")
+        user1 = User(id="user1", name="user1", email="user1@example.com")
+        user2 = User(id="user2", name="user2", email="user2@example.com")
         rbac._storage.store_user(user1)
         rbac._storage.store_user(user2)
         
@@ -248,7 +248,7 @@ class TestCompleteAuthorizationFlow:
         rbac._storage.store_resource(resource)
         
         # Create initial permission
-        read_perm = Permission(id="perm_read", action="read", resource=resource)
+        read_perm = Permission(id="perm_read", action="read", resource_type=resource.type)
         rbac._storage.store_permission(read_perm)
         
         # Create role with limited permission
@@ -274,7 +274,7 @@ class TestCompleteAuthorizationFlow:
         assert rbac.can("user2", "write", "service") is False
         
         # Add write permission to role
-        write_perm = Permission(id="perm_write", action="write", resource=resource)
+        write_perm = Permission(id="perm_write", action="write", resource_type=resource.type)
         rbac._storage.store_permission(write_perm)
         
         updated_role = Role(
@@ -295,13 +295,13 @@ class TestCompleteAuthorizationFlow:
         # Create users in different domains
         user_domain_a = User(
             id="user_a",
-            username="user_a",
+            name="user_a",
             email="user@domain-a.com",
             domain="domain-a"
         )
         user_domain_b = User(
             id="user_b",
-            username="user_b",
+            name="user_b",
             email="user@domain-b.com",
             domain="domain-b"
         )
@@ -315,8 +315,8 @@ class TestCompleteAuthorizationFlow:
         rbac._storage.store_resource(resource_b)
         
         # Create permissions
-        perm_a = Permission(id="perm_a", action="read", resource=resource_a)
-        perm_b = Permission(id="perm_b", action="read", resource=resource_b)
+        perm_a = Permission(id="perm_a", action="read", resource_type=resource_a.type)
+        perm_b = Permission(id="perm_b", action="read", resource_type=resource_b.type)
         rbac._storage.store_permission(perm_a)
         rbac._storage.store_permission(perm_b)
         
@@ -359,7 +359,7 @@ class TestPerformanceWithLoad:
         rbac = RBAC(storage='memory')
         
         # Create user
-        user = User(id="power_user", username="power_user", email="power@example.com")
+        user = User(id="power_user", name="power_user", email="power@example.com")
         rbac._storage.store_user(user)
         
         # Create resource
@@ -371,7 +371,7 @@ class TestPerformanceWithLoad:
             permission = Permission(
                 id=f"perm_{i}",
                 action=f"action_{i}",
-                resource=resource
+                resource_type=resource.type
             )
             rbac._storage.store_permission(permission)
             
@@ -397,7 +397,7 @@ class TestPerformanceWithLoad:
         rbac = RBAC(storage='memory', enable_hierarchy=True)
         
         # Create user
-        user = User(id="hierarchical_user", username="h_user", email="h@example.com")
+        user = User(id="hierarchical_user", name="h_user", email="h@example.com")
         rbac._storage.store_user(user)
         
         # Create resource
@@ -409,7 +409,7 @@ class TestPerformanceWithLoad:
             permission = Permission(
                 id=f"perm_level_{i}",
                 action=f"level_{i}_action",
-                resource=resource
+                resource_type=resource.type
             )
             rbac._storage.store_permission(permission)
             

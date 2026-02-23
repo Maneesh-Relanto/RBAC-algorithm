@@ -233,9 +233,10 @@ def test_update_own_post(client, tokens):
 
 
 def test_update_others_post_as_author_fails(client, tokens):
-    """Test that author cannot update other author's posts."""
-    # Try to update post 1 (created by seed data)
-    response = client.put('/posts/1',
+    """Test that author cannot update another author's posts."""
+    # Post 4 is created by jane_author in seed data; john_author (tokens['author'])
+    # does not own it, so this should be rejected.
+    response = client.put('/posts/4',
         headers=get_auth_header(tokens['author']),
         json={
             'title': 'Trying to hack'
