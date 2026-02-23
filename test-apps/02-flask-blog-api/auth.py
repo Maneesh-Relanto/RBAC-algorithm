@@ -109,10 +109,11 @@ def require_auth(f):
                 'message': 'Please login again'
             }), 401
             
-        except jwt.InvalidTokenError as e:
+        except jwt.InvalidTokenError:
+            # Do not expose internal JWT error details to the client
             return jsonify({
                 'error': 'Invalid token',
-                'message': str(e)
+                'message': 'Token is invalid'
             }), 401
     
     return decorated_function
