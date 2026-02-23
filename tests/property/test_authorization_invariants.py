@@ -60,7 +60,7 @@ class TestAuthorizationInvariants:
         # Create user with no roles
         user = User(
             id=user_id,
-            username=user_id,
+            name=user_id,
             email=f"{user_id}@example.com"
         )
         rbac._storage.store_user(user)
@@ -84,7 +84,7 @@ class TestAuthorizationInvariants:
         # Create user
         user = User(
             id=user_id,
-            username=user_id,
+            name=user_id,
             email=f"{user_id}@example.com"
         )
         rbac._storage.store_user(user)
@@ -100,7 +100,7 @@ class TestAuthorizationInvariants:
         permission = Permission(
             id=f"perm_{user_id}_{action}",
             action=action,
-            resource=resource
+            resource_type=resource.type
         )
         rbac._storage.store_permission(permission)
         
@@ -140,7 +140,7 @@ class TestAuthorizationInvariants:
         # Create user
         user = User(
             id=user_id,
-            username=user_id,
+            name=user_id,
             email=f"{user_id}@example.com"
         )
         rbac._storage.store_user(user)
@@ -156,7 +156,7 @@ class TestAuthorizationInvariants:
         permission = Permission(
             id=f"perm_{action1}",
             action=action1,
-            resource=resource
+            resource_type=resource.type
         )
         rbac._storage.store_permission(permission)
         
@@ -194,7 +194,7 @@ class TestAuthorizationInvariants:
         # Create suspended user
         user = User(
             id=user_id,
-            username=user_id,
+            name=user_id,
             email=f"{user_id}@example.com",
             status=EntityStatus.SUSPENDED
         )
@@ -211,7 +211,7 @@ class TestAuthorizationInvariants:
         permission = Permission(
             id=f"perm_{action}",
             action=action,
-            resource=resource
+            resource_type=resource.type
         )
         rbac._storage.store_permission(permission)
         
@@ -247,7 +247,7 @@ class TestAuthorizationInvariants:
         # Create user
         user = User(
             id=user_id,
-            username=user_id,
+            name=user_id,
             email=f"{user_id}@example.com"
         )
         rbac._storage.store_user(user)
@@ -272,7 +272,7 @@ class TestAuthorizationInvariants:
         # Create user
         user = User(
             id=user_id,
-            username=user_id,
+            name=user_id,
             email=f"{user_id}@example.com"
         )
         rbac._storage.store_user(user)
@@ -294,7 +294,7 @@ class TestAuthorizationInvariants:
             permission = Permission(
                 id=f"perm_{i}",
                 action=action,
-                resource=resource
+                resource_type=resource.type
             )
             rbac._storage.store_permission(permission)
             

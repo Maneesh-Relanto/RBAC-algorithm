@@ -29,10 +29,10 @@ def sample_user(domain):
     """Sample user fixture."""
     return User(
         id="user1",
-        username="testuser",
+        name="testuser",
         email="test@example.com",
         domain=domain,
-        metadata={"department": "engineering"}
+        attributes={"department": "engineering"}
     )
 
 
@@ -52,9 +52,8 @@ def sample_permission(domain):
     """Sample permission fixture."""
     return Permission(
         id="perm1",
-        action="read",
-        resource="document",
-        domain=domain
+        resource_type="document",
+        action="read"
     )
 
 

@@ -12,12 +12,12 @@ class TestUser:
         """Test user creation."""
         user = User(
             id="user1",
-            username="testuser",
+            name="testuser",
             email="test@example.com",
             domain=domain
         )
         assert user.id == "user1"
-        assert user.username == "testuser"
+        assert user.name == "testuser"
         assert user.email == "test@example.com"
         assert user.domain == domain
     
@@ -25,18 +25,18 @@ class TestUser:
         """Test user with metadata."""
         user = User(
             id="user1",
-            username="testuser",
+            name="testuser",
             email="test@example.com",
             domain=domain,
-            metadata={"department": "engineering", "level": 3}
+            attributes={"department": "engineering", "level": 3}
         )
-        assert user.metadata["department"] == "engineering"
-        assert user.metadata["level"] == 3
+        assert user.attributes["department"] == "engineering"
+        assert user.attributes["level"] == 3
     
     def test_user_equality(self, domain):
         """Test user equality."""
-        user1 = User(id="user1", username="test", email="test@example.com", domain=domain)
-        user2 = User(id="user1", username="test", email="test@example.com", domain=domain)
+        user1 = User(id="user1", name="test", email="test@example.com", domain=domain)
+        user2 = User(id="user1", name="test", email="test@example.com", domain=domain)
         assert user1.id == user2.id
         assert user1.domain == user2.domain
 
@@ -78,22 +78,19 @@ class TestPermission:
         """Test permission creation."""
         perm = Permission(
             id="perm1",
-            action="read",
-            resource="document",
-            domain=domain
+            resource_type="document",
+            action="read"
         )
         assert perm.id == "perm1"
         assert perm.action == "read"
-        assert perm.resource == "document"
-        assert perm.domain == domain
+        assert perm.resource_type == "document"
     
     def test_permission_with_conditions(self, domain):
         """Test permission with ABAC conditions."""
         perm = Permission(
             id="perm1",
+            resource_type="document",
             action="read",
-            resource="document",
-            domain=domain,
             conditions={"department": {"==": "engineering"}}
         )
         assert perm.conditions is not None

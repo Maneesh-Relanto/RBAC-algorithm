@@ -41,11 +41,11 @@ def client(app):
 def registered_users(client):
     """Register all personas and return {username: token, ...}."""
     credentials = {
-        "admin":    {"username": "test_admin",   "email": "tadmin@test.com",  "password": "Admin1234!"},
-        "editor":   {"username": "test_editor",  "email": "teditor@test.com", "password": "Editor123!"},
-        "author1":  {"username": "test_author1", "email": "tauth1@test.com",  "password": "Author123!"},
-        "author2":  {"username": "test_author2", "email": "tauth2@test.com",  "password": "Author456!"},
-        "reader":   {"username": "test_reader",  "email": "treader@test.com", "password": "Reader123!"},
+        "admin":    {"username": "test_admin",   "email": "tadmin@test.com",  "password": "Admin1234!"},   # NOSONAR
+        "editor":   {"username": "test_editor",  "email": "teditor@test.com", "password": "Editor123!"},  # NOSONAR
+        "author1":  {"username": "test_author1", "email": "tauth1@test.com",  "password": "Author123!"},  # NOSONAR
+        "author2":  {"username": "test_author2", "email": "tauth2@test.com",  "password": "Author456!"},  # NOSONAR
+        "reader":   {"username": "test_reader",  "email": "treader@test.com", "password": "Reader123!"},  # NOSONAR
     }
     tokens = {}
     user_ids = {}
@@ -117,7 +117,7 @@ class TestAuth:
         r = client.post("/auth/register", json={
             "username": "newuser_auth",
             "email": "newuser_auth@test.com",
-            "password": "NewPass123!",
+            "password": "NewPass123!",  # NOSONAR
         })
         assert r.status_code == 201
         body = r.json()
@@ -126,12 +126,11 @@ class TestAuth:
         assert body["user"]["role"] == "reader"
 
     def test_register_duplicate_username(self, client, registered_users):
-        token = registered_users["tokens"]["reader"]
         # reader already registered; try same username
         r = client.post("/auth/register", json={
             "username": "test_reader",
             "email": "other@test.com",
-            "password": "Pass1234!",
+            "password": "Pass1234!",  # NOSONAR
         })
         assert r.status_code == 409
 
@@ -139,7 +138,7 @@ class TestAuth:
         r = client.post("/auth/register", json={
             "username": "different_name",
             "email": "treader@test.com",
-            "password": "Pass1234!",
+            "password": "Pass1234!",  # NOSONAR
         })
         assert r.status_code == 409
 
@@ -147,19 +146,19 @@ class TestAuth:
         client.post("/auth/register", json={
             "username": "login_test_user",
             "email": "logintest@test.com",
-            "password": "LoginPass1!",
+            "password": "LoginPass1!",  # NOSONAR
         })
-        r = client.post("/auth/login", json={"username": "login_test_user", "password": "LoginPass1!"})
+        r = client.post("/auth/login", json={"username": "login_test_user", "password": "LoginPass1!"})  # NOSONAR
         assert r.status_code == 200
         body = r.json()
         assert "access_token" in body
 
     def test_login_wrong_password(self, client, registered_users):
-        r = client.post("/auth/login", json={"username": "test_reader", "password": "wrongpassword"})
+        r = client.post("/auth/login", json={"username": "test_reader", "password": "wrongpassword"})  # NOSONAR
         assert r.status_code == 401
 
     def test_login_nonexistent_user(self, client):
-        r = client.post("/auth/login", json={"username": "ghost_user", "password": "whatever"})
+        r = client.post("/auth/login", json={"username": "ghost_user", "password": "whatever"})  # NOSONAR
         assert r.status_code == 401
 
     def test_get_me(self, client, registered_users):

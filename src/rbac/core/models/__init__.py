@@ -14,6 +14,11 @@ import hashlib
 import json
 
 
+def _utcnow() -> datetime:
+    """Timezone-aware UTC now — used as a default_factory in dataclasses."""
+    return datetime.now(timezone.utc)
+
+
 class EntityStatus(Enum):
     """Status of an entity in the system."""
     ACTIVE = "active"
@@ -55,8 +60,8 @@ class User:
     attributes: Dict[str, Any] = field(default_factory=dict)
     status: EntityStatus = EntityStatus.ACTIVE
     domain: Optional[str] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
-    updated_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=_utcnow)
+    updated_at: datetime = field(default_factory=_utcnow)
     
     def __post_init__(self):
         """Validate user data after initialization."""
@@ -167,7 +172,7 @@ class Permission:
     action: str
     description: Optional[str] = None
     conditions: Dict[str, Any] = field(default_factory=dict)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=_utcnow)
     
     def __post_init__(self):
         """Validate permission data."""
@@ -286,8 +291,8 @@ class Resource:
     parent_id: Optional[str] = None
     status: EntityStatus = EntityStatus.ACTIVE
     domain: Optional[str] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
-    updated_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=_utcnow)
+    updated_at: datetime = field(default_factory=_utcnow)
     
     def __post_init__(self):
         """Validate resource data."""

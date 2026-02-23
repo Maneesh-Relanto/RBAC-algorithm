@@ -25,6 +25,9 @@ from storage import InMemoryStorage
 
 logger = logging.getLogger(__name__)
 
+# Roles that can perform ownership-protected actions on ANY resource
+OWNERSHIP_OVERRIDE_ROLES: frozenset = frozenset({"admin", "editor"})
+
 
 # ---------------------------------------------------------------------------
 # App-state accessors (thin DI wrappers over request.app.state)
@@ -72,6 +75,70 @@ class RequirePermission:
         self.resource_type = resource_type
         self.check_ownership = check_ownership
 
+    def _resolve_resource(
+        self,
+        request: Request,
+        storage: InMemoryStorage,
+    ):
+        """Fetch the resource from storage based on path params, or return None."""
+        resource_id = (
+            request.path_params.get("post_id")
+            or request.path_params.get("comment_id")
+            or request.path_params.get("id")
+        )
+        if not resource_id:
+            return None
+
+        resource_id = str(resource_id)
+        if self.resource_type and "post" in self.resource_type:
+            resource = storage.get_post(resource_id)
+        elif self.resource_type and "comment" in self.resource_type:
+            resource = storage.get_comment(resource_id)
+        else:
+            resource = None
+
+        if resource is None:
+            label = (self.resource_type or "resource").capitalize()
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail={"error": "Not found", "message": f"{label} not found"},
+            )
+        return resource
+
+    @staticmethod
+    def _build_context(current_user: dict, resource) -> dict:
+        """Build the ABAC context dict for the RBAC engine."""
+        context: dict = {
+            "user_id": current_user["user_id"],
+            "username": current_user["username"],
+            "role": current_user["role"],
+        }
+        if resource is not None:
+            owner_id = getattr(resource, "author_id", None) or getattr(resource, "user_id", None)
+            context["resource_owner"] = owner_id
+            context["is_owner"] = owner_id == current_user["user_id"]
+        return context
+
+    def _raise_forbidden(self, check_ownership: bool, resource, context: dict) -> None:
+        """Raise the appropriate 403 HTTPException."""
+        if check_ownership and resource and not context.get("is_owner"):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail={
+                    "error": "Forbidden",
+                    "message": "You can only modify your own content",
+                    "reason": "ownership_required",
+                },
+            )
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": "Forbidden",
+                "message": f"You do not have permission to {self.action} {self.resource_type}",
+                "reason": "permission_denied",
+            },
+        )
+
     def __call__(
         self,
         request: Request,
@@ -80,40 +147,10 @@ class RequirePermission:
         rbac=Depends(get_rbac),
     ) -> None:
         """Perform the RBAC check; raises HTTPException on failure."""
-        resource = None
-
-        if self.check_ownership:
-            resource_id = (
-                request.path_params.get("post_id")
-                or request.path_params.get("comment_id")
-                or request.path_params.get("id")
-            )
-            if resource_id:
-                resource_id = str(resource_id)
-                if self.resource_type and "post" in self.resource_type:
-                    resource = storage.get_post(resource_id)
-                elif self.resource_type and "comment" in self.resource_type:
-                    resource = storage.get_comment(resource_id)
-
-                if resource is None:
-                    label = (self.resource_type or "resource").capitalize()
-                    raise HTTPException(
-                        status_code=status.HTTP_404_NOT_FOUND,
-                        detail={"error": "Not found", "message": f"{label} not found"},
-                    )
+        resource = self._resolve_resource(request, storage) if self.check_ownership else None
+        context = self._build_context(current_user, resource)
 
         try:
-            context: dict = {
-                "user_id": current_user["user_id"],
-                "username": current_user["username"],
-                "role": current_user["role"],
-            }
-
-            if resource is not None:
-                owner_id = getattr(resource, "author_id", None) or getattr(resource, "user_id", None)
-                context["resource_owner"] = owner_id
-                context["is_owner"] = owner_id == current_user["user_id"]
-
             rbac_user_id = f"user_{current_user['user_id']}"
             can_access = rbac.can(
                 user_id=rbac_user_id,
@@ -121,25 +158,19 @@ class RequirePermission:
                 resource=self.resource_type,
                 context=context,
             )
-
             if not can_access:
-                if self.check_ownership and resource and not context.get("is_owner"):
-                    raise HTTPException(
-                        status_code=status.HTTP_403_FORBIDDEN,
-                        detail={
-                            "error": "Forbidden",
-                            "message": "You can only modify your own content",
-                            "reason": "ownership_required",
-                        },
-                    )
-                raise HTTPException(
-                    status_code=status.HTTP_403_FORBIDDEN,
-                    detail={
-                        "error": "Forbidden",
-                        "message": f"You do not have permission to {self.action} {self.resource_type}",
-                        "reason": "permission_denied",
-                    },
-                )
+                self._raise_forbidden(self.check_ownership, resource, context)
+
+            # Ownership enforcement: RBAC may allow the action by role, but if the
+            # caller doesn't own the resource and their role cannot override ownership,
+            # block the request explicitly.
+            if (
+                self.check_ownership
+                and resource
+                and not context.get("is_owner")
+                and current_user.get("role", "") not in OWNERSHIP_OVERRIDE_ROLES
+            ):
+                self._raise_forbidden(True, resource, context)
 
         except HTTPException:
             raise  # Re-raise HTTP exceptions untouched

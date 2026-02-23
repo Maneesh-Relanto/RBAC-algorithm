@@ -24,8 +24,8 @@ class TestMemoryStorage:
     
     def test_list_users(self, storage, domain):
         """Test listing users."""
-        user1 = User(id="user1", username="user1", email="user1@example.com", domain=domain)
-        user2 = User(id="user2", username="user2", email="user2@example.com", domain=domain)
+        user1 = User(id="user1", name="user1", email="user1@example.com", domain=domain)
+        user2 = User(id="user2", name="user2", email="user2@example.com", domain=domain)
         storage.create_user(user1)
         storage.create_user(user2)
         
@@ -55,8 +55,8 @@ class TestMemoryStorage:
     
     def test_domain_isolation(self, storage):
         """Test that domains are isolated."""
-        user1 = User(id="user1", username="user1", email="user1@example.com", domain="domain1")
-        user2 = User(id="user1", username="user1", email="user1@example.com", domain="domain2")
+        user1 = User(id="user1", name="user1", email="user1@example.com", domain="domain1")
+        user2 = User(id="user1", name="user1", email="user1@example.com", domain="domain2")
         
         storage.create_user(user1)
         storage.create_user(user2)
@@ -73,7 +73,7 @@ class TestMemoryStorage:
     def test_batch_create_users(self, storage, domain):
         """Test batch user creation."""
         users = [
-            User(id=f"user{i}", username=f"user{i}", email=f"user{i}@example.com", domain=domain)
+            User(id=f"user{i}", name=f"user{i}", email=f"user{i}@example.com", domain=domain)
             for i in range(5)
         ]
         created = storage.batch_create_users(users)
@@ -81,7 +81,7 @@ class TestMemoryStorage:
     
     def test_get_users_by_role(self, storage, domain):
         """Test getting users by role."""
-        user = User(id="user1", username="user1", email="user1@example.com", domain=domain)
+        user = User(id="user1", name="user1", email="user1@example.com", domain=domain)
         role = Role(id="role1", name="admin", description="Admin", domain=domain)
         
         storage.create_user(user)

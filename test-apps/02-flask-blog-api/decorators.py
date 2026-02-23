@@ -9,117 +9,149 @@ from auth import get_current_user
 
 logger = logging.getLogger(__name__)
 
+# Error/message constants to avoid duplication
+MSG_AUTH_REQUIRED = 'Authentication required'
+MSG_LOGIN_REQUIRED = 'You must be logged in to perform this action'
+
+
+# ---------------------------------------------------------------------------
+# Private helpers (reduce cognitive complexity in the decorators below)
+# ---------------------------------------------------------------------------
+
+# Roles that can perform ownership-protected actions on ANY resource
+OWNERSHIP_OVERRIDE_ROLES = frozenset({'admin', 'editor'})
+
+
+def _fetch_owned_resource(storage, resource_type, kwargs):
+    """Return the owned resource for an ownership check, or (None, error) if not found."""
+    resource_id = kwargs.get('post_id') or kwargs.get('comment_id') or kwargs.get('id')
+    if not resource_id:
+        return None, None
+
+    resource_id = str(resource_id)  # Flask URL converters may yield int
+    if 'post' in (resource_type or ''):
+        resource = storage.get_post(resource_id)
+    elif 'comment' in (resource_type or ''):
+        resource = storage.get_comment(resource_id)
+    else:
+        resource = None
+
+    if not resource:
+        error = (
+            jsonify({'error': 'Not found', 'message': f'{resource_type.capitalize()} not found'}),
+            404,
+        )
+        return None, error
+    return resource, None
+
+
+def _build_permission_context(user, resource):
+    """Build the ABAC context dict used during the RBAC check."""
+    context = {
+        'user_id': user['user_id'],
+        'username': user['username'],
+        'role': user['role'],
+    }
+    if resource:
+        owner_id = getattr(resource, 'author_id', None) or getattr(resource, 'user_id', None)
+        context['resource_owner'] = owner_id
+        context['is_owner'] = owner_id == user['user_id']
+    return context
+
+
+def _forbidden_response(check_ownership, resource, context, action, resource_type):
+    """Return a 403 response tuple for a failed permission check."""
+    if check_ownership and resource and not context.get('is_owner'):
+        return jsonify({
+            'error': 'Forbidden',
+            'message': 'You can only modify your own content',
+            'reason': 'ownership_required',
+        }), 403
+    return jsonify({
+        'error': 'Forbidden',
+        'message': f'You do not have permission to {action} {resource_type}',
+        'reason': 'permission_denied',
+    }), 403
+
 
 def require_permission(action: str, resource_type: str = None, check_ownership: bool = False):
     """
     Decorator to require specific permission for a route.
-    
+
     Args:
         action: The action to check (e.g., 'create', 'read', 'update', 'delete')
         resource_type: The resource type (e.g., 'post', 'comment'). If None, uses action only
         check_ownership: If True, check if user owns the resource (for update/delete operations)
-    
+
     Usage:
         @app.route('/posts', methods=['POST'])
         @require_auth
         @require_permission('create', 'post')
         def create_post():
-            # User has 'create:post' permission
             return jsonify({'message': 'Post created'})
-        
+
         @app.route('/posts/<int:post_id>', methods=['PUT'])
         @require_auth
         @require_permission('update', 'post', check_ownership=True)
         def update_post(post_id):
-            # User has 'update:post' permission AND owns the post
             return jsonify({'message': 'Post updated'})
     """
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             user = get_current_user()
-            
+
             if not user:
                 return jsonify({
-                    'error': 'Authentication required',
-                    'message': 'You must be logged in to perform this action'
+                    'error': MSG_AUTH_REQUIRED,
+                    'message': MSG_LOGIN_REQUIRED,
                 }), 401
-            
-            # Get RBAC engine from Flask's g object
+
             rbac = g.rbac
             storage = g.storage
-            
-            # Get resource for ownership check
+
+            # Resolve resource for ownership checks
             resource = None
             if check_ownership:
-                # Extract resource ID from URL parameters
-                resource_id = kwargs.get('post_id') or kwargs.get('comment_id') or kwargs.get('id')
-                
-                if resource_id:
-                    # Get resource from storage to check ownership
-                    if 'post' in (resource_type or ''):
-                        resource = storage.get_post(resource_id)
-                    elif 'comment' in (resource_type or ''):
-                        resource = storage.get_comment(resource_id)
-                    
-                    if not resource:
-                        return jsonify({
-                            'error': 'Not found',
-                            'message': f'{resource_type.capitalize()} not found'
-                        }), 404
-            
-            # Check permission with RBAC engine
+                resource, err = _fetch_owned_resource(storage, resource_type, kwargs)
+                if err is not None:
+                    return err
+
             try:
-                # Build context for ABAC (attribute-based) checks
-                context = {
-                    'user_id': user['user_id'],
-                    'username': user['username'],
-                    'role': user['role']
-                }
-                
-                # Add resource info to context for ownership checks
-                if resource:
-                    context['resource_owner'] = getattr(resource, 'author_id', None) or getattr(resource, 'user_id', None)
-                    context['is_owner'] = context['resource_owner'] == user['user_id']
-                
-                # Perform authorization check using user_id with 'user_' prefix
+                context = _build_permission_context(user, resource)
                 rbac_user_id = f"user_{user['user_id']}"
                 can_access = rbac.can(
                     user_id=rbac_user_id,
                     action=action,
                     resource=resource_type,
-                    context=context
+                    context=context,
                 )
-                
+
                 if not can_access:
-                    # If ownership check required but user doesn't own the resource
-                    if check_ownership and resource and not context.get('is_owner'):
-                        return jsonify({
-                            'error': 'Forbidden',
-                            'message': 'You can only modify your own content',
-                            'reason': 'ownership_required'
-                        }), 403
-                    
-                    return jsonify({
-                        'error': 'Forbidden',
-                        'message': f'You do not have permission to {action} {resource_type}',
-                        'reason': 'permission_denied'
-                    }), 403
-                
-                # Store resource in g for handler use
+                    return _forbidden_response(check_ownership, resource, context, action, resource_type)
+
+                # Ownership enforcement: if the resource is found and the user does not
+                # own it, only override roles (admin/editor) may proceed.
+                if (
+                    check_ownership
+                    and resource
+                    and not context.get('is_owner')
+                    and user.get('role', '') not in OWNERSHIP_OVERRIDE_ROLES
+                ):
+                    return _forbidden_response(True, resource, context, action, resource_type)
+
                 if resource:
                     g.resource = resource
-                
+
                 return f(*args, **kwargs)
-                
+
             except Exception as e:
-                # Log the full error internally; do not expose exception details to the client
                 logger.error('Authorization check failed: %s', str(e), exc_info=True)
                 return jsonify({
                     'error': 'Authorization error',
-                    'message': 'Failed to check permissions'
+                    'message': 'Failed to check permissions',
                 }), 500
-        
+
         return decorated_function
     return decorator
 
@@ -154,8 +186,8 @@ def require_role(*roles):
             
             if not user:
                 return jsonify({
-                    'error': 'Authentication required',
-                    'message': 'You must be logged in to perform this action'
+                    'error': MSG_AUTH_REQUIRED,
+                    'message': MSG_LOGIN_REQUIRED
                 }), 401
             
             user_role = user.get('role', '')
@@ -191,8 +223,8 @@ def require_admin(f):
         
         if not user:
             return jsonify({
-                'error': 'Authentication required',
-                'message': 'You must be logged in to perform this action'
+                'error': MSG_AUTH_REQUIRED,
+                'message': MSG_LOGIN_REQUIRED
             }), 401
         
         if user.get('role') != 'admin':
