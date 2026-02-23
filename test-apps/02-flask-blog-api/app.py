@@ -637,4 +637,6 @@ if __name__ == '__main__':
     ║                                                ║
     ╚════════════════════════════════════════════════╝
     """)
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Use debug flag from app config (controlled via FLASK_DEBUG env var) rather than
+    # hardcoding debug=True, which would enable the interactive debugger in production.
+    app.run(debug=app.config.get('DEBUG', False), host='0.0.0.0', port=5000)

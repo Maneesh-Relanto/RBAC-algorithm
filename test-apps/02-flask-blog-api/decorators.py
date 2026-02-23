@@ -2,9 +2,12 @@
 RBAC Decorators for Flask Blog API.
 Provides decorators for permission and role-based authorization.
 """
+import logging
 from functools import wraps
 from flask import g, jsonify
 from auth import get_current_user
+
+logger = logging.getLogger(__name__)
 
 
 def require_permission(action: str, resource_type: str = None, check_ownership: bool = False):
@@ -110,9 +113,11 @@ def require_permission(action: str, resource_type: str = None, check_ownership: 
                 return f(*args, **kwargs)
                 
             except Exception as e:
+                # Log the full error internally; do not expose exception details to the client
+                logger.error('Authorization check failed: %s', str(e), exc_info=True)
                 return jsonify({
                     'error': 'Authorization error',
-                    'message': f'Failed to check permissions: {str(e)}'
+                    'message': 'Failed to check permissions'
                 }), 500
         
         return decorated_function
