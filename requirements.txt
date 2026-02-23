@@ -22,12 +22,13 @@ pytest-timeout>=2.2.0       # Test timeout protection
 # Optional storage backends
 # Uncomment as needed:
 
-# PostgreSQL
-# sqlalchemy>=2.0.0
+# SQLite / PostgreSQL / MySQL (SQLAlchemy adapter)
+sqlalchemy>=2.0.0
+
+# PostgreSQL driver
 # psycopg2-binary>=2.9.0
 
-# MySQL
-# sqlalchemy>=2.0.0
+# MySQL driver
 # pymysql>=1.0.0
 
 # Redis (caching)
